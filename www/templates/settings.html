@@ -1,20 +1,17 @@
-<!--
- * Written by Janos Potecki 02/2015
- * UCL Computer Science 
- * janospotecki@outlook.com
--->
-<ion-view title="Settings ">
+<ion-view title="Settings">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <h3>Choose your List</h3>
+        <h3>Choose your list</h3>
         <form class="list">
             <ion-radio>Animals</ion-radio>
             <ion-radio>Buildings</ion-radio>
             <ion-radio>Countries</ion-radio>
         </form>
+        <form class="list"></form>
         <div class="button-bar">
-            <button class="button button-positive button-clear button-block button-large icon ion-trash-a"></button>
-            <a ui-sref="editList" class="button button-positive button-clear button-block button-large icon ion-edit"></a>
-            <a ui-sref="newList" class="button button-positive button-clear button-block button-large icon ion-android-add"></a>
+            <button class="button button-stable button-block  icon ion-close"></button>
+            <a ui-sref="editList" class="button button-stable button-block  icon ion-compose"></a>
+            <a ui-sref="addList" class="button button-stable button-block  icon ion-plus"></a>
         </div>
+        <ion-list></ion-list>
     </ion-content>
 </ion-view>

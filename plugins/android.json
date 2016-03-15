@@ -1,0 +1,15 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-nativeaudio": {
+            "PACKAGE_NAME": "com.ionicframework.keyphone713048"
+        }
+    },
+    "dependent_plugins": {}
+}

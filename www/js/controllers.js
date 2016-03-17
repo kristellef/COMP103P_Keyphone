@@ -25,23 +25,6 @@ angular.module('app.controllers', [])
     $ionicPlatform.ready(function() {
         $scope.playTrack = $audioPlayer.play;
 
-        // $scope.playTrack = function(track, key) {
-        //     if($scope.player.key != key){
-        //         if($scope.player.key != '') {
-        //             window.plugins.NativeAudio.unload($scope.player.key);
-        //         }
-        //         // preload the audiofile
-        //         window.plugins.NativeAudio.preloadSimple(key, track, function(msg) {
-        //             console.log('status: ' + msg);
-        //             $scope.player.key = key;
-        //             window.plugins.NativeAudio.play(key);
-        //         }, function(msg){
-        //             console.log('error: ' + msg);
-        //         });
-        //     } else {
-        //         window.plugins.NativeAudio.play(key);
-        //     }
-        // }
     })
 
 })

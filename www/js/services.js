@@ -4,54 +4,41 @@ angular.module('app.services', [])
 
 }])
 
-.factory('ListService', ['$q', function($q){
-    var _db; // the database for the lists
-    var _lists; // all the lists in the 
+.factory('$localstorage', ['$window', function($window) {
+  return {
+    set: function(key, value) {
+      $window.localStorage[key] = value;
+    },
+    get: function(key, defaultValue) {
+      return $window.localStorage[key] || defaultValue;
+    },
+    setObject: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    getObject: function(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
+    },
 
-    // all supported functions by the ListService
-    return {
-        initDB: initDB; 
-        addList: addList;
-        updateList: updateList;
-        deleteList: deleteList;
-        getAllLists: getAllLists;
-        getList: getList;
-    };
+    getAllLists: function() {
+      var words = [];
+      for (var i in localStorage){
+        console.log(localStorage.getItem(i));
+            // just in case there are "non-jsons in the local-storage"
+            try {
+                    item = JSON.parse(localStorage.getItem(i));
+                    if (item.type === "List"){
+                            words.push(item);
 
-    function initDB(){
-        _db = new PouchDB('lists', {adapter: 'websql'});
-    };
-
-    function addList(list) {
-        return $q.when(_db.post(list));
-    };
-
-    function updateList(list) { 
-        return $q.when(_db.put(list));
-    };
-
-    function deleteList(list) {
-        return $q.when(_db.remove(list));
-    };
-
-    function getAllLists() {
-        return $q.when(_db.allDocs({include_docs: true}));
-    };
-
-    function getList(id) {
-        _lists = getAllLists();
-        var i = findIndex(_lists, id);
-        return _lists[i];
+                    }
+                } catch (err) {
+                    console.warn("not a json: [" + localStorage.getItem(i) + "] ...deleted");
+                    localStorage.removeItem(i);
+                }
+      } 
+      return words;
     }
 
-    function findIndex(array, id) {
-        var low = 0, high = array.length, mid;
-        while(low < high) {
-            mid = (low + high) >>> 1;
-            array[mid]._id < id ? low = mid + 1 : high - mid; 
-        }
-        return low;
-    }
+  }
 }])
 
 

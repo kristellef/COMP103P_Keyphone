@@ -1,7 +1,31 @@
 angular.module('app.services', [])
 
-.factory('BlankFactory', [function(){
+.factory('$audioPlayer', [function($scope){
+  var player = {
+    key : ''
+  };
 
+
+  return {
+    player : player,
+    play: function(track, key) {
+      if(player.key != key){
+                if(player.key != '') {
+                    window.plugins.NativeAudio.unload(player.key);
+                }
+                // preload the audiofile
+                window.plugins.NativeAudio.preloadSimple(key, track, function(msg) {
+                    console.log('status: ' + msg);
+                    player.key = key;
+                    window.plugins.NativeAudio.play(key);
+                }, function(msg){
+                    console.log('error: ' + msg);
+                });
+            } else {
+                window.plugins.NativeAudio.play(key);
+            }
+    }
+  }
 }])
 
 .factory('$localstorage', ['$window', function($window) {

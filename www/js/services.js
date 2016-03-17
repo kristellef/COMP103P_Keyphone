@@ -36,6 +36,10 @@ angular.module('app.services', [])
                 }
       } 
       return words;
+    },
+
+    getList: function(id) {
+      return JSON.parse($window.localStorage[id] || '{}');
     }
 
   }

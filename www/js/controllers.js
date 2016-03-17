@@ -120,19 +120,67 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('settingsCtrl', function($scope) {
+.controller('settingsCtrl', function($scope, $ionicHistory, $localstorage) {
+    
+
+    $scope.delete = function() {
+        localStorage.clear();
+        $ionicHistory.clearCache();
+        $ionicHistory.clearHistory();
+        location.reload();
+    }
+
+
+    $scope.lists = $localstorage.getAllLists();
+})
+
+.controller('page20Ctrl', function($scope) {
+    
 
 })
    
-.controller('page20Ctrl', function($scope) {
+.controller('addListCtrl', function($scope, $http, $ionicPlatform, $localstorage, $window, $ionicHistory) {
+
+    $http.get('data/words.json').success(function(data) {
+        $scope.words = data;
+
+    })
+    
+    // localStorage for words
+    var words = [];
+    $scope.addWord = function(word) {
+        var found = false;
+        for(var i = 0; i < words.length; i++){
+            if(word.localeCompare(words[i]) == 0){
+                found = true;
+                words.splice(i, 1);
+                break;
+            }
+       }
+       if(!found) {
+            words.push(word);
+       } 
+    }
+
+    $scope.saveObj = function(newList){
+        var _id = new Date().getTime();
+        $localstorage.setObject(_id, {
+            type: 'List',
+            _id : _id,
+            name : newList.name,
+            words : words
+
+        });
+
+        // this is not working under IOS
+        location.href = '#/page19';
+        $window.location.reload();
+
+    };
 
 })
    
 .controller('editListCtrl', function($scope) {
-
-})
-   
-.controller('addListCtrl', function($scope) {
 
 })
    
@@ -143,4 +191,3 @@ angular.module('app.controllers', [])
 .controller('addWordsCtrl', function($scope) {
 
 })
- 

@@ -2,16 +2,20 @@
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         <h3>Choose your list</h3>
         <form class="list">
-            <ion-radio>Animals</ion-radio>
-            <ion-radio>Buildings</ion-radio>
-            <ion-radio>Countries</ion-radio>
+            <div ng-repeat="list in lists">
+                <ion-radio>{{list.name}}</ion-radio>
+            </div>
+
+            <div class="button-bar">
+
+                <button class="button button-stable button-block  icon ion-close"></button>
+                <a ui-sref="editList" class="button button-stable button-block  icon ion-compose"></a>
+                <a ui-sref="addList" class="button button-stable button-block  icon ion-plus"></a>
+            </div>
+            <a ng-click="delete()" 
+            ng-hide="!lists.length"
+            class="button button-outline button-assertive button-block icon ion-clean">Clear all DATA</a>
         </form>
-        <form class="list"></form>
-        <div class="button-bar">
-            <button class="button button-stable button-block  icon ion-close"></button>
-            <a ui-sref="editList" class="button button-stable button-block  icon ion-compose"></a>
-            <a ui-sref="addList" class="button button-stable button-block  icon ion-plus"></a>
-        </div>
-        <ion-list></ion-list>
+
     </ion-content>
 </ion-view>

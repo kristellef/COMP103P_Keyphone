@@ -1,12 +1,14 @@
 <ion-view title="Edit list">
+
     <ion-content overflow-scroll="true" padding="true" class="has-header">
+    <h1>{{list.name}}</h1>
         <ion-list>
             
                 <ion-checkbox ng-repeat="word in words" ng-checked="word.checked" ng-model="word.checked"name="{{word.word}}">{{word.word}}</ion-checkbox>
         </ion-list>
         <div class="button-bar">
-            <a ng-click="save()" class="button button-stable button-block  icon ion-plus"></a>
-            <button class="button button-stable button-block  icon ion-close"></button>
+            <a ng-click="save()" class="button button-stable button-block  icon ion-checkmark-round"></a>
+            <button ng-click="abort()" class="button button-stable button-block  icon ion-close"></button>
         </div>
     </ion-content>
 </ion-view>

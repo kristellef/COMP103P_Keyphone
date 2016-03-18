@@ -64,7 +64,7 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('settingsCtrl', function($scope, $ionicHistory, $localstorage, $state) {
+.controller('settingsCtrl', function($scope, $ionicHistory, $localstorage, $state, $window) {
     
 
     $scope.delete = function() {
@@ -88,7 +88,13 @@ angular.module('app.controllers', [])
 
      $scope.editList = function() {
         console.log(selected)
-        $state.go('editList', { ListID: selected })
+        $state.go('editList', { ListID: selected , reload : true})
+    }
+
+    $scope.deleteList = function() {
+        localStorage.removeItem(selected);
+        $window.location.reload();
+
     }
 
 })
@@ -137,8 +143,9 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('editListCtrl', function($scope, $http, $localstorage, $ionicPlatform, $stateParams, $state) {
-
+.controller('editListCtrl', function($scope, $http, $localstorage, $ionicPlatform, $stateParams, $state, $window) {
+    
+    $scope.list = $localstorage.getList($stateParams.ListID);
     // get the words and set the words from the list as checked
     $http.get('data/words.json').success(function(data) {
         var all_words = data;
@@ -149,15 +156,14 @@ angular.module('app.controllers', [])
             words.push({word: all_words[i], checked: false});
         }
         // get all words from the list
-        var ListID = $stateParams.ListID
-        var checkedWords = ($localstorage.getList(ListID)).words;
+        var checkedWords = $scope.list.words;
 
         // mark the checkedWords in the words[]
         for (var i in checkedWords) {
             cword = checkedWords[i];
             for(var j in words){
-                if(cword.localeCompare(words[j].word) == 0){
-                    words[i].checked = true;
+                if(cword.localeCompare(words[j].word) === 0){
+                    words[j].checked = true;
                 }
             }
 
@@ -172,10 +178,14 @@ angular.module('app.controllers', [])
                 words.push($scope.words[i].word);
             }
         }
-        var ListID = $stateParams.ListID;
-        var list = $localstorage.getList(ListID);
-        list.words = words;
-        $localstorage.setObject(ListID, list);
+        
+        $scope.list.words = words;
+        $localstorage.setObject($scope.list._id, $scope.list);
+        $state.go("settings");
+    }
+
+    $scope.abort = function() {
+        $scope.list = ''
         $state.go("settings");
     }
 

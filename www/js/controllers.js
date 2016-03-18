@@ -34,9 +34,50 @@ angular.module('app.controllers', [])
 })
    
 .controller('catCtrl', function($scope) {
+    $scope.name=["Cat","Dog","Fish","Hat","Jug","Leaf","Pen","Ring","Watch"];
 
-})
-   
+    $scope.number=Math.round(Math.random()*9);// use a length to generate number
+    $scope.numberforother=Math.round(Math.random()*17);
+
+     
+    $scope.basic=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+    $scope.first=$scope.name[$scope.number].charAt(0);    //remember to add $scope for variable
+  
+    $scope.for={
+    A:["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    B:['A',"C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    C:['A',"B","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    D:['A',"B","C","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    E:['A',"B","C","D","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    F:['A',"B","C","D","E","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    G:['A',"B","C","D","E","F","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    H:['A',"B","C","D","E","F","G","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    I:['A',"B","C","D","E","F","G","H","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    J:['A',"B","C","D","E","F","G","H","I","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    K:['A',"B","C","D","E","F","G","H","I","J","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    L:['A',"B","C","D","E","F","G","H","I","J","K","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    M:['A',"B","C","D","E","F","G","H","I","J","K","L","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    N:['A',"B","C","D","E","F","G","H","I","J","K","L","M","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    O:['A',"B","C","D","E","F","G","H","I","J","K","L","M","N","P","Q","R","S","T","U","V","W","X","Y","Z"],
+    P:['A',"B","C","D","E","F","G","H","I","J","K","L","M","N","O","Q","R","S","T","U","V","W","X","Y","Z"],
+    R:['A',"B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","S","T","U","V","W","X","Y","Z"],
+    S:['A',"B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","T","U","V","W","X","Y","Z"],
+    T:['A',"B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","U","V","W","X","Y","Z"],
+    U:['A',"B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","V","W","X","Y","Z"],
+    V:['A',"B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","W","X","Y","Z"],  
+    W:['A',"B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","X","Y","Z"],
+    X:['A',"B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","Y","Z"],
+    Y:['A',"B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Z"],
+    Z:['A',"B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y"],
+     };
+    //$scope.aaa=Math.round(Math.random()*9); ///use for 9 choosing buttons in random
+    //$scope.final=[];
+    //for (var i = 0; i < 9 &&i!=scope.aaa; i++) {
+        //$scope.final[i]=$scope.for[first][numberforother+2]
+    //}
+
+
+})   
 .controller('catCorrectCtrl', function($scope) {
 
 })
@@ -81,7 +122,6 @@ angular.module('app.controllers', [])
 
 .controller('page20Ctrl', function($scope) {
     
-
 })
    
 .controller('addListCtrl', function($scope, $http, $ionicPlatform, $localstorage, $window, $ionicHistory) {

@@ -24,7 +24,6 @@ angular.module('app.controllers', [])
     
     $ionicPlatform.ready(function() {
         $scope.playTrack = $audioPlayer.play;
-
     })
 
 })
@@ -65,7 +64,7 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('settingsCtrl', function($scope, $ionicHistory, $localstorage) {
+.controller('settingsCtrl', function($scope, $ionicHistory, $localstorage, $state) {
     
 
     $scope.delete = function() {
@@ -77,6 +76,21 @@ angular.module('app.controllers', [])
 
 
     $scope.lists = $localstorage.getAllLists();
+
+    if($scope.lists.length > 0){
+        var selected = $scope.lists[0];
+    }
+
+    $scope.select = function(ListID) {
+        selected = ListID;
+        console.log(selected);
+    }
+
+     $scope.editList = function() {
+        console.log(selected)
+        $state.go('editList', { ListID: selected })
+    }
+
 })
 
 .controller('page20Ctrl', function($scope) {
@@ -84,19 +98,19 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('addListCtrl', function($scope, $http, $ionicPlatform, $localstorage, $window, $ionicHistory) {
+.controller('addListCtrl', function($scope, $http, $ionicPlatform, $localstorage, $window) {
 
     $http.get('data/words.json').success(function(data) {
         $scope.words = data;
 
-    })
+    });
     
     // localStorage for words
     var words = [];
     $scope.addWord = function(word) {
         var found = false;
         for(var i = 0; i < words.length; i++){
-            if(word.localeCompare(words[i]) == 0){
+            if(word.localeCompare(words[i]) == 0) {
                 found = true;
                 words.splice(i, 1);
                 break;
@@ -107,17 +121,15 @@ angular.module('app.controllers', [])
        } 
     }
 
-    $scope.saveObj = function(newList){
+    $scope.saveObj = function(newList) {
         var _id = new Date().getTime();
         $localstorage.setObject(_id, {
             type: 'List',
             _id : _id,
             name : newList.name,
             words : words
-
         });
 
-        // this is not working under IOS
         location.href = '#/page19';
         $window.location.reload();
 
@@ -125,8 +137,50 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('editListCtrl', function($scope) {
+.controller('editListCtrl', function($scope, $http, $localstorage, $ionicPlatform, $stateParams, $state) {
 
+    // get the words and set the words from the list as checked
+    $http.get('data/words.json').success(function(data) {
+        var all_words = data;
+            
+        // create a array with the words as objects
+        var words = [];
+        for(var i in all_words){
+            words.push({word: all_words[i], checked: false});
+        }
+        // get all words from the list
+        var ListID = $stateParams.ListID
+        var checkedWords = ($localstorage.getList(ListID)).words;
+
+        // mark the checkedWords in the words[]
+        for (var i in checkedWords) {
+            cword = checkedWords[i];
+            for(var j in words){
+                if(cword.localeCompare(words[j].word) == 0){
+                    words[i].checked = true;
+                }
+            }
+
+        }
+        $scope.words = words;
+        });
+
+    $scope.save = function(){
+        words = [];
+        for(var i in $scope.words){
+            if($scope.words[i].checked === true){
+                words.push($scope.words[i].word);
+            }
+        }
+        var ListID = $stateParams.ListID;
+        var list = $localstorage.getList(ListID);
+        list.words = words;
+        $localstorage.setObject(ListID, list);
+        $state.go("settings");
+    }
+
+
+    
 })
    
 .controller('addList2Ctrl', function($scope) {

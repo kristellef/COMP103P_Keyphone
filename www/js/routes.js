@@ -113,7 +113,7 @@ angular.module('app.routes', [])
   })
 
   .state('editList', {
-    url: '/page21',
+    url: '/page21/:ListID',
     templateUrl: 'templates/editList.html',
     controller: 'editListCtrl'
   })

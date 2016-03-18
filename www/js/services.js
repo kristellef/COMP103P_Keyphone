@@ -5,7 +5,6 @@ angular.module('app.services', [])
     key : ''
   };
 
-
   return {
     player : player,
     play: function(track, key) {
@@ -18,7 +17,7 @@ angular.module('app.services', [])
                     console.log('status: ' + msg);
                     player.key = key;
                     window.plugins.NativeAudio.play(key);
-                }, function(msg){
+                }, function(msg) {
                     console.log('error: ' + msg);
                 });
             } else {
@@ -30,19 +29,26 @@ angular.module('app.services', [])
 
 .factory('$localstorage', ['$window', function($window) {
   return {
-    set: function(key, value) {
-      $window.localStorage[key] = value;
-    },
-    get: function(key, defaultValue) {
-      return $window.localStorage[key] || defaultValue;
-    },
     setObject: function(key, value) {
       $window.localStorage[key] = JSON.stringify(value);
     },
     getObject: function(key) {
       return JSON.parse($window.localStorage[key] || '{}');
     },
+    
 
+    /*
+     * $localstorage.getAllLists() :
+     * Returns an array with all lists in the localstorage
+     * [
+     *  {
+     *    type : String,
+     *    _id  : Number,
+     *    name : String,
+     *    words: String[]
+     *  }
+     * ]
+     */
     getAllLists: function() {
       var words = [];
       for (var i in localStorage){
@@ -61,6 +67,10 @@ angular.module('app.services', [])
       } 
       return words;
     },
+
+    /*
+    
+    */
 
     getList: function(id) {
       return JSON.parse($window.localStorage[id] || '{}');

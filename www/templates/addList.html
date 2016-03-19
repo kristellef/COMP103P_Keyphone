@@ -1,5 +1,5 @@
 <ion-view title="Add List" ng-controller="addListCtrl" >
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
+    <ion-content overflow-scroll="true" padding="true" class="has-header has-footer">
         
             <ion-list>
                 <label class="item item-input">
@@ -15,8 +15,8 @@
                     <ion-checkbox ng-click="addWord('{{word}}')">{{ word }}</ion-checkbox>
                 </div>
             </ion-list>
-
-            <a class="button button-stable button-block" type="submit" ng-click="saveObj(newList)">Create new list</a>
-        
     </ion-content>
+     <ion-footer-bar class="bar bar-footer bar-positive footer-button">
+        <a class="button button-stable button-full button-clear" type="submit" ng-click="saveObj(newList.name)">Create new list</a>
+    </ion-footer-bar>
 </ion-view>

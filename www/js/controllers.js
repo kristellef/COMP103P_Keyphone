@@ -146,6 +146,8 @@ angular.module('app.controllers', [])
    
 .controller('addListCtrl', function($scope, $http, $ionicPlatform, $localstorage, $window) {
 
+    $scope.newList = {};
+
     $http.get('data/words.json').success(function(data) {
         $scope.words = data;
 
@@ -167,17 +169,19 @@ angular.module('app.controllers', [])
        } 
     }
 
-    $scope.saveObj = function(newList) {
+    $scope.saveObj = function() {
         var _id = new Date().getTime();
         $localstorage.setObject(_id, {
             type: 'List',
             _id : _id,
-            name : newList.name,
+            name : $scope.newList.name,
             words : words
         });
 
         location.href = '#/page19';
         $window.location.reload();
+
+
 
     };
 

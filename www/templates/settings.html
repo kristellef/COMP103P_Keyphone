@@ -1,14 +1,15 @@
 <ion-view title="Settings">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <h3>Choose your list</h3>
+        <h3 ng-hide="!lists.length">Choose your list</h3>
+        <h3 ng-hide="lists.length"> No Lists </h3> 
             <div ng-repeat="list in lists">
                 <ion-radio ng-click="select({{list._id}})">{{list.name}}</ion-radio>
             </div>
 
             <div class="button-bar">
 
-                <button ng-click="deleteList()" class="button button-stable button-block  icon ion-trash-b"></button>
-                <a ng-click="editList()" class="button button-stable button-block icon ion-compose"></a>
+                <button ng-click="deleteList()" ng-hide="!lists.length" class="button button-stable button-block  icon ion-trash-b"></button>
+                <a ng-click="editList()" ng-hide="!lists.length" class="button button-stable button-block icon ion-compose"></a>
                 <a ui-sref="addList" class="button button-stable button-block icon ion-plus"></a>
             </div>
             <a ng-click="delete()" 

@@ -35,7 +35,7 @@ angular.module('app.controllers', [])
    
 .controller('catCtrl', function($scope,$localstorage) {
 
-    $scope.name= ["Cat","Dog","Fish","Hat","Jug","Leaf","Pen","Ring","Watch"];
+    $scope.name= ["cat","dog","fish","hat","jug","leaf","pen","ring","watch"];
 
     //var list = $localstorage.getList(listID);
     //var words = list.words;
@@ -44,7 +44,7 @@ angular.module('app.controllers', [])
 
      
     
-    $scope.first=$scope.name[$scope.number].charAt(0);    //remember to add $scope for variable 取出被选中单词的第一个字母
+    $scope.first=($scope.name[$scope.number].charAt(0)).toUpperCase();    //remember to add $scope for variable 取出被选中单词的第一个字母
   
     $scope.fo={
     A:["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],

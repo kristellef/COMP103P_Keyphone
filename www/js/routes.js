@@ -124,11 +124,7 @@ angular.module('app.routes', [])
     controller: 'addListCtrl'
   })
 
-  .state('addList2', {
-    url: '/page23',
-    templateUrl: 'templates/addList2.html',
-    controller: 'addList2Ctrl'
-  })
+  
 
   .state('addWords', {
     url: '/page24',

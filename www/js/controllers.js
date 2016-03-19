@@ -39,13 +39,12 @@ angular.module('app.controllers', [])
 
     //var list = $localstorage.getList(listID);
     //var words = list.words;
-
-    $scope.number=Math.round(Math.random()*8);// 8=length-1
-    $scope.numberforother=Math.round(Math.random()*15);//get the number different from the correct one
+    $scope.number=Math.round(Math.random()*8);// 8=length-1    use this random number to get a random words from list
+    $scope.numberforother=Math.round(Math.random()*14);//get numbers different from the correct one
 
      
-    //$scope.basic=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-    $scope.first=$scope.name[$scope.number].charAt(0);    //remember to add $scope for variable 随机取出的单词的第一个字母
+    
+    $scope.first=$scope.name[$scope.number].charAt(0);    //remember to add $scope for variable 取出被选中单词的第一个字母
   
     $scope.fo={
     A:["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
@@ -75,15 +74,30 @@ angular.module('app.controllers', [])
     Z:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y"],
      };
     
+   
+
+    $scope.link=[];   ////// used for change page to correct
+    for (var n = 0; n <9; n++) {
+       $scope.link[n]="catNotcorrect";
+    }
+
+
     
 
 
-    $scope.pos=Math.round(Math.random()*8+1); ///use for 9 choosing buttons in random
+    $scope.pos=Math.round(Math.random()*7+1); ///use for 9 choosing buttons in random
+    $scope.link[$scope.pos]="catCorrect";   //used to change page to correct
     $scope.position=[];
     for (var i=0; i <9; i++) {
         if (i==$scope.pos) {$scope.position[i]=$scope.first;}
         else{$scope.position[i]=$scope.fo[$scope.first][($scope.numberforother)+i+1];}
     }
+   
+
+
+    
+
+
 
 
 })   

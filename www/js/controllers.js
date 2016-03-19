@@ -28,23 +28,78 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('chooseListCtrl', function($scope) {
+.controller('chooseListCtrl', function($scope, $localstorage, $state, GameDataCreator) {
+    $scope.lists = $localstorage.getAllLists();
+
+    $scope.chosenList = function(id) {
+        $localstorage.setObject('current_game', 
+            GameDataCreator.createGameData($localstorage.getList(id)));
+        $state.go("gamePad");
+    }
 
 })
-   
-.controller('catCtrl', function($scope) {
 
+.controller('gamePad', function($scope, $localstorage, $state, WordSetup) {
+    
+    var gameData = $localstorage.getObject('current_game');
+    console.log(gameData);
+    if(gameData.activeWords > 0) {
+        
+        // get a random word
+        var rand = Math.floor(gameData.activeWords * Math.random());
+        var iterator = 0;
+        var index = 0;
 
-})   
-.controller('catCorrectCtrl', function($scope) {
+        for(var i in gameData.words) {
+            if (!gameData.words[i].played && rand == iterator){
+                // the correct index found!
+                index = i;
+            }
+            if (!gameData.words[i].played){
+                // increase iterator, since this is a correct index
+                iterator++;
+            }
+        }
 
-})
-   
-.controller('dogCtrl', function($scope) {
+        $scope.word = (gameData.words[index].word);
+        //console.log(gameData.words[index].word);
 
-})
-   
-.controller('dogNotCorrectCtrl', function($scope) {
+        // now get the first char of the word
+        // and generate 8 other random cars
+        var first = (gameData.words[index].word.charAt(0)).toUpperCase();
+
+        // give the data to the scope
+        $scope.chars = WordSetup.createRandomCharArray(first);
+
+        // TODO:
+        gameData.activeWords--;
+        // change attempt to 1
+        gameData.words[index].attempts = 1;
+        // change played = true
+        gameData.words[index].played = true;
+
+        // update localstorage game
+        $localstorage.setObject('current_game', gameData);
+        console.log($localstorage.getObject('current_game'));
+
+    } else {
+        $state.go("summary");
+    }
+
+    $scope.checkChar = function(c) {
+        if(c == first){
+            console.log("correct");
+ 
+        } else {
+            if (gameData.words[index].attempts < 2){
+                gameData.words[index].attempts = 2;
+                $localstorage.setObject('current_game', gameData);
+                WordSetup.replaceSixChars($scope.chars, first);
+            } else {
+                console.log("wrong");
+            }
+        }
+    }
 
 })
    

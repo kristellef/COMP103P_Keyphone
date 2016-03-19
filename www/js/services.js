@@ -1,5 +1,31 @@
 angular.module('app.services', [])
 
+
+
+.factory('GameData', [function($scope, $localstorage){
+  var gameData = {}
+
+  return {
+    gameData : gameData,
+    createGameData: function(id) {
+      list = $localstorage.getList(id)
+      gameData.id = list._id;
+      gameData.name = list.name;
+      gameData.words = [];
+      for(var i in list.words) {
+        w = {};
+        w.word = list.words[i];
+        
+      }
+
+    },
+  }
+}])
+
+
+
+
+
 .factory('$audioPlayer', [function($scope){
   var player = {
     key : ''

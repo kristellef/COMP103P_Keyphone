@@ -1,38 +1,38 @@
 angular.module('app.controllers', [])
-  
+
 .controller('summaryCtrl', function($scope) {
 
 })
-   
+
 .controller('correctCtrl', function($scope) {
 
 })
-   
+
 .controller('incorrectCtrl', function($scope) {
 
 })
-   
+
 .controller('helpCtrl', function($scope) {
 
 })
-   
+
 .controller('keyphoneCtrl', function($scope) {
 
 })
-   
+
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer) {
-    
+
     $ionicPlatform.ready(function() {
         $scope.playTrack = $audioPlayer.play;
     })
 
 })
-   
+
 .controller('chooseListCtrl', function($scope, $localstorage, $state, GameDataCreator) {
     $scope.lists = $localstorage.getAllLists();
 
     $scope.chosenList = function(id) {
-        $localstorage.setObject('current_game', 
+        $localstorage.setObject('current_game',
             GameDataCreator.createGameData($localstorage.getList(id)));
         $state.go("gamePad");
     }
@@ -40,11 +40,11 @@ angular.module('app.controllers', [])
 })
 
 .controller('gamePad', function($scope, $localstorage, $state, WordSetup) {
-    
+
     var gameData = $localstorage.getObject('current_game');
     console.log(gameData);
     if(gameData.activeWords > 0) {
-        
+
         // get a random word
         var rand = Math.floor(gameData.activeWords * Math.random());
         var iterator = 0;
@@ -89,7 +89,7 @@ angular.module('app.controllers', [])
     $scope.checkChar = function(c) {
         if(c == first){
             console.log("correct");
- 
+
         } else {
             if (gameData.words[index].attempts < 2){
                 gameData.words[index].attempts = 2;
@@ -102,25 +102,25 @@ angular.module('app.controllers', [])
     }
 
 })
-   
+
 .controller('dogCorrectCtrl', function($scope) {
 
 })
-   
+
 .controller('dogNotCorrect2Ctrl', function($scope) {
 
 })
-   
+
 .controller('catNotcorrectCtrl', function($scope) {
 
 })
-   
+
 .controller('catNotCorrect2Ctrl', function($scope) {
 
 })
-   
+
 .controller('settingsCtrl', function($scope, $ionicHistory, $localstorage, $state, $window) {
-    
+
 
     $scope.delete = function() {
         localStorage.clear();
@@ -155,9 +155,9 @@ angular.module('app.controllers', [])
 })
 
 .controller('page20Ctrl', function($scope) {
-    
+
 })
-   
+
 .controller('addListCtrl', function($scope, $http, $ionicPlatform, $localstorage, $window) {
 
     $scope.newList = {};
@@ -166,7 +166,7 @@ angular.module('app.controllers', [])
         $scope.words = data;
 
     });
-    
+
     // localStorage for words
     var words = [];
     $scope.addWord = function(word) {
@@ -180,7 +180,7 @@ angular.module('app.controllers', [])
        }
        if(!found) {
             words.push(word);
-       } 
+       }
     }
 
     $scope.saveObj = function() {
@@ -200,14 +200,14 @@ angular.module('app.controllers', [])
     };
 
 })
-   
+
 .controller('editListCtrl', function($scope, $http, $localstorage, $ionicPlatform, $stateParams, $state, $window) {
-    
+
     $scope.list = $localstorage.getList($stateParams.ListID);
     // get the words and set the words from the list as checked
     $http.get('data/words.json').success(function(data) {
         var all_words = data;
-            
+
         // create a array with the words as objects
         var words = [];
         for(var i in all_words){
@@ -236,7 +236,7 @@ angular.module('app.controllers', [])
                 words.push($scope.words[i].word);
             }
         }
-        
+
         $scope.list.words = words;
         $localstorage.setObject($scope.list._id, $scope.list);
         $state.go("settings");
@@ -248,13 +248,13 @@ angular.module('app.controllers', [])
     }
 
 
-    
+
 })
-   
+
 .controller('addList2Ctrl', function($scope) {
 
 })
-   
+
 .controller('addWordsCtrl', function($scope) {
 
 })

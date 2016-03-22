@@ -2,7 +2,7 @@
 
 <ion-content overflow-scroll="true" padding="true" class="has-header has-footer">
         <h3 ng-hide="!lists.length">Choose your list</h3>
-        <h3 ng-hide="lists.length"> No Lists </h3> 
+        <h3 ng-hide="lists.length"> No Lists </h3>
             <div ng-repeat="list in lists">
                 <ion-radio ng-click="select({{list._id}})">{{list.name}}</ion-radio>
             </div>
@@ -11,7 +11,7 @@
             <ion-footer-bar class="bar footer-bar footer-button">
                 <a ng-click="deleteList()" ng-hide="!lists.length" class="button button-positive button-outline icon ion-trash-b"> Delete</a>
                 <a ng-click="editList()" ng-hide="!lists.length" class="button button-positive button-outline icon ion-compose"> Edit</a>
-                <a ui-sref="addList" class="button button-positive button-outline icon ion-plus"> Create</a>
+                <a ui-sref="addList" class="button button-positive button-outline icon ion-plus"> Add</a>
                 <a ng-click="delete()" ng-hide="!lists.length" class="button button-positive button-assertive button-outline icon ion-clean"> Clear All DATA</a>
             </ion-footer-bar>
 </ion-view>

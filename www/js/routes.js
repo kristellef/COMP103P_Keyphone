@@ -7,8 +7,8 @@ angular.module('app.routes', [])
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-    
-  
+
+
 
       .state('summary', {
     url: '/page2',
@@ -56,12 +56,6 @@ angular.module('app.routes', [])
     url: '/page9',
     templateUrl: 'templates/game1.html',
     controller: 'catCtrl'
-  })
-
-  .state('catCorrect', {
-    url: '/page12',
-    templateUrl: 'templates/catCorrect.html',
-    controller: 'catCorrectCtrl'
   })
 
   .state('gamePad', {
@@ -124,7 +118,7 @@ angular.module('app.routes', [])
     controller: 'addListCtrl'
   })
 
-  
+
 
   .state('addWords', {
     url: '/page24',
@@ -134,6 +128,6 @@ angular.module('app.routes', [])
 
 $urlRouterProvider.otherwise('/page8')
 
-  
+
 
 });

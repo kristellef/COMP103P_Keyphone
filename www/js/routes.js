@@ -118,8 +118,6 @@ angular.module('app.routes', [])
     controller: 'addListCtrl'
   })
 
-
-
   .state('addWords', {
     url: '/page24',
     templateUrl: 'templates/addWords.html',
@@ -127,7 +125,5 @@ angular.module('app.routes', [])
   })
 
 $urlRouterProvider.otherwise('/page8')
-
-
 
 });

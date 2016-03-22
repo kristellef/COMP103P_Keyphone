@@ -25,18 +25,15 @@ angular.module('app.controllers', [])
     $ionicPlatform.ready(function() {
         $scope.playTrack = $audioPlayer.play;
     })
-
 })
 
 .controller('chooseListCtrl', function($scope, $localstorage, $state, GameDataCreator) {
     $scope.lists = $localstorage.getAllLists();
-
     $scope.chosenList = function(id) {
         $localstorage.setObject('current_game',
             GameDataCreator.createGameData($localstorage.getList(id)));
         $state.go("gamePad");
     }
-
 })
 
 .controller('gamePad', function($scope, $localstorage, $state, WordSetup) {
@@ -44,12 +41,10 @@ angular.module('app.controllers', [])
     var gameData = $localstorage.getObject('current_game');
     console.log(gameData);
     if(gameData.activeWords > 0) {
-
         // get a random word
         var rand = Math.floor(gameData.activeWords * Math.random());
         var iterator = 0;
         var index = 0;
-
         for(var i in gameData.words) {
             if (!gameData.words[i].played && rand == iterator){
                 // the correct index found!
@@ -60,27 +55,21 @@ angular.module('app.controllers', [])
                 iterator++;
             }
         }
-
         $scope.word = (gameData.words[index].word);
         //console.log(gameData.words[index].word);
-
         // now get the first char of the word
         // and generate 8 other random cars
         var first = (gameData.words[index].word.charAt(0)).toUpperCase();
-
         // give the data to the scope
         $scope.chars = WordSetup.createRandomCharArray(first);
-
-        // TODO:
         gameData.activeWords--;
         // change attempt to 1
         gameData.words[index].attempts = 1;
         // change played = true
         gameData.words[index].played = true;
-
         // update localstorage game
         $localstorage.setObject('current_game', gameData);
-        console.log($localstorage.getObject('current_game'));
+        //console.log($localstorage.getObject('current_game'));
 
     } else {
         $state.go("summary");
@@ -89,7 +78,6 @@ angular.module('app.controllers', [])
     $scope.checkChar = function(c) {
         if(c == first){
             console.log("correct");
-
         } else {
             if (gameData.words[index].attempts < 2){
                 gameData.words[index].attempts = 2;
@@ -120,15 +108,12 @@ angular.module('app.controllers', [])
 })
 
 .controller('settingsCtrl', function($scope, $ionicHistory, $localstorage, $state, $window) {
-
-
     $scope.delete = function() {
         localStorage.clear();
         $ionicHistory.clearCache();
         $ionicHistory.clearHistory();
         location.reload();
     }
-
 
     $scope.lists = $localstorage.getAllLists();
 
@@ -149,7 +134,6 @@ angular.module('app.controllers', [])
     $scope.deleteList = function() {
         localStorage.removeItem(selected);
         $window.location.reload();
-
     }
 
 })
@@ -161,10 +145,8 @@ angular.module('app.controllers', [])
 .controller('addListCtrl', function($scope, $http, $ionicPlatform, $localstorage, $window) {
 
     $scope.newList = {};
-
     $http.get('data/words.json').success(function(data) {
         $scope.words = data;
-
     });
 
     // localStorage for words
@@ -194,11 +176,7 @@ angular.module('app.controllers', [])
 
         location.href = '#/page19';
         $window.location.reload();
-
-
-
     };
-
 })
 
 .controller('editListCtrl', function($scope, $http, $localstorage, $ionicPlatform, $stateParams, $state, $window) {
@@ -207,7 +185,6 @@ angular.module('app.controllers', [])
     // get the words and set the words from the list as checked
     $http.get('data/words.json').success(function(data) {
         var all_words = data;
-
         // create a array with the words as objects
         var words = [];
         for(var i in all_words){
@@ -215,7 +192,6 @@ angular.module('app.controllers', [])
         }
         // get all words from the list
         var checkedWords = $scope.list.words;
-
         // mark the checkedWords in the words[]
         for (var i in checkedWords) {
             cword = checkedWords[i];
@@ -224,7 +200,6 @@ angular.module('app.controllers', [])
                     words[j].checked = true;
                 }
             }
-
         }
         $scope.words = words;
         });
@@ -246,8 +221,6 @@ angular.module('app.controllers', [])
         $scope.list = ''
         $state.go("settings");
     }
-
-
 
 })
 

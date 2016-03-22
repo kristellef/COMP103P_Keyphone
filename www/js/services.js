@@ -1,30 +1,72 @@
 angular.module('app.services', [])
 
 
-
-.factory('GameData', [function($scope, $localstorage){
-  var gameData = {}
-
+.factory('WordSetup', [function($scope){
   return {
-    gameData : gameData,
-    createGameData: function(id) {
-      list = $localstorage.getList(id)
-      gameData.id = list._id;
-      gameData.name = list.name;
-      gameData.words = [];
-      for(var i in list.words) {
-        w = {};
-        w.word = list.words[i];
+    createRandomCharArray : function(first) {
+      var nineChars = [];
+        var pool = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
         
-      }
+        // delete the first char from the pool
+        for(var i in pool) {
+            if(first == pool[i]){
+                pool.splice(i, 1);
+                break;
+            }
+        }
+        //console.log(pool);
+        // generate the other 8 chars from the pool and add them
+        // to nineChars[]
 
+        for(var i = 0; i < 8; i++){
+            var pool_index = Math.floor(pool.length * Math.random());
+            // remove the char at pool_index and save as c
+            var c = pool.splice(pool_index, 1);
+            // insert c into nineChars at pos 
+            nineChars.splice(0, 0, c[0]);
+        }
+        // generate a random position in nineChars and add first 
+        // there
+        var pos = Math.floor(8 * Math.random());
+        nineChars.splice(pos, 0, first);
+        return nineChars;
     },
+    replaceSixChars : function(arr, first) {
+      var i = 0;
+      while (i < 6) {
+        // generate random number
+        var rand = Math.floor(arr.length * Math.random());
+        if (arr[rand] != " " && arr[rand] != first){
+          i++;
+          arr[rand] = " ";
+        }
+      }
+      return arr;
+    }
   }
 }])
 
 
-
-
+.factory('GameDataCreator', [function($scope){
+  return {
+    createGameData: function(list) {
+      var gameData = {};
+      gameData.id = list._id;
+      gameData.name = list.name;
+      gameData.activeWords = list.words.length;
+      gameData.words = [];
+      for(var i in list.words) {
+        w = {};
+        w.word = list.words[i];
+        w.played = false;
+        w.solved = false;
+        w.attempts = 0;
+        gameData.words.push(w);
+      }
+      return gameData;
+    }
+  }
+}])
 
 .factory('$audioPlayer', [function($scope){
   var player = {
@@ -78,7 +120,7 @@ angular.module('app.services', [])
     getAllLists: function() {
       var words = [];
       for (var i in localStorage){
-        console.log(localStorage.getItem(i));
+        //console.log(localStorage.getItem(i));
             // just in case there are "non-jsons in the local-storage"
             try {
                     item = JSON.parse(localStorage.getItem(i));
@@ -104,6 +146,7 @@ angular.module('app.services', [])
 
   }
 }])
+
 
 
 

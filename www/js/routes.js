@@ -52,9 +52,9 @@ angular.module('app.routes', [])
     controller: 'chooseListCtrl'
   })
 
-  .state('cat', {
+  .state('game1', {
     url: '/page9',
-    templateUrl: 'templates/cat.html',
+    templateUrl: 'templates/game1.html',
     controller: 'catCtrl'
   })
 
@@ -64,10 +64,10 @@ angular.module('app.routes', [])
     controller: 'catCorrectCtrl'
   })
 
-  .state('dog', {
+  .state('gamePad', {
     url: '/page13',
-    templateUrl: 'templates/dog.html',
-    controller: 'dogCtrl'
+    templateUrl: 'templates/gamePad.html',
+    controller: 'gamePad'
   })
 
   .state('dogNotCorrect', {

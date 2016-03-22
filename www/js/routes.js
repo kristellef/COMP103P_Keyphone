@@ -86,7 +86,7 @@ angular.module('app.routes', [])
   })
 
   .state('app.editList', {
-    url: '/page21/:ListID',
+    url: '/editList/:ListID',
     views : {
         'menuContent' : {
             templateUrl: 'templates/editList.html',
@@ -96,7 +96,7 @@ angular.module('app.routes', [])
   })
 
   .state('app.addList', {
-    url: '/page22',
+    url: '/addList',
     views : {
         'menuContent' : {
             templateUrl: 'templates/addList.html',

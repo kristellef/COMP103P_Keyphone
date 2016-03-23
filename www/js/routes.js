@@ -56,7 +56,7 @@ angular.module('app.routes', [])
   })
 
   .state('app.gamePad', {
-    url: '/page13',
+    url: '/gamePad',
     views : {
         'menuContent' : {
             templateUrl: 'templates/gamePad.html',

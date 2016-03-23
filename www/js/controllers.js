@@ -24,7 +24,9 @@ angular.module('app.controllers', [])
 
 .controller('gamePad', function($scope, $localstorage, $state, WordSetup) {
     var first, gameData, index;
+
     $scope.$on('$ionicView.enter', function() {
+        $scope.styles = [];
         gameData = $localstorage.getObject('current_game');
         console.log(gameData);
         if(gameData.activeWords > 0) {
@@ -49,6 +51,12 @@ angular.module('app.controllers', [])
             first = (gameData.words[index].word.charAt(0)).toUpperCase();
             // give the data to the scope
             $scope.chars = WordSetup.createRandomCharArray(first);
+            // create the styles for the buttons
+            for (var i in $scope.chars){
+                $scope.styles.push({
+                    'background-color': ''
+                });
+            }
             gameData.activeWords--;
             // change attempt to 1
             gameData.words[index].attempts = 1;
@@ -63,15 +71,24 @@ angular.module('app.controllers', [])
         }
     })
 
-    $scope.checkChar = function(c) {
+    $scope.checkChar = function(c, pos) {
         if(c == first){
+            $scope.styles[pos] = {'background-color' : 'green'};
             console.log("correct");
+            console.log($scope.styles);
         } else {
             if (gameData.words[index].attempts < 2){
                 gameData.words[index].attempts = 2;
                 $localstorage.setObject('current_game', gameData);
                 WordSetup.replaceSixChars($scope.chars, first);
             } else {
+                $scope.styles[pos] = {'background-color' : 'red'};
+                for (var i in $scope.chars){
+                    if ($scope.chars[i] === first){
+                        $scope.styles[i] = {'background-color' : 'green'};
+                        break;
+                    }
+                }
                 console.log("wrong");
             }
         }

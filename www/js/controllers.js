@@ -65,11 +65,11 @@ angular.module('app.controllers', [])
             // update localstorage game
             $localstorage.setObject('current_game', gameData);
             //console.log($localstorage.getObject('current_game'));
-
         } else {
             $state.go("app.summary");
         }
     })
+    //TODO: outsource the styles to a CSS
 
     $scope.checkChar = function(c, pos) {
         if(c == first){
@@ -103,8 +103,11 @@ angular.module('app.controllers', [])
         $ionicHistory.clearHistory();
         location.reload();
     }
-
     $scope.lists = $localstorage.getAllLists();
+
+    $scope.$on('$ionicView.enter', function() {
+        $scope.lists = $localstorage.getAllLists();
+    });
 
     if($scope.lists.length > 0){
         var selected = $scope.lists[0];
@@ -162,9 +165,7 @@ angular.module('app.controllers', [])
             name : $scope.newList.name,
             words : words
         });
-
         $state.go('app.settings');
-        $window.location.reload();
     };
 })
 

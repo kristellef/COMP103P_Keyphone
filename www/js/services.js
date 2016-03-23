@@ -6,7 +6,6 @@ angular.module('app.services', [])
     createRandomCharArray : function(first) {
       var nineChars = [];
         var pool = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-        
         // delete the first char from the pool
         for(var i in pool) {
             if(first == pool[i]){
@@ -17,15 +16,14 @@ angular.module('app.services', [])
         //console.log(pool);
         // generate the other 8 chars from the pool and add them
         // to nineChars[]
-
         for(var i = 0; i < 8; i++){
             var pool_index = Math.floor(pool.length * Math.random());
             // remove the char at pool_index and save as c
             var c = pool.splice(pool_index, 1);
-            // insert c into nineChars at pos 
+            // insert c into nineChars at pos
             nineChars.splice(0, 0, c[0]);
         }
-        // generate a random position in nineChars and add first 
+        // generate a random position in nineChars and add first
         // there
         var pos = Math.floor(8 * Math.random());
         nineChars.splice(pos, 0, first);
@@ -42,6 +40,13 @@ angular.module('app.services', [])
         }
       }
       return arr;
+    },
+    replaceAllButCorrect : function(arr, first) {
+        for(var i in arr){
+            if(arr[i] != first){
+                arr[i] = " ";
+            }
+        }
     }
   }
 }])
@@ -103,8 +108,6 @@ angular.module('app.services', [])
     getObject: function(key) {
       return JSON.parse($window.localStorage[key] || '{}');
     },
-    
-
     /*
      * $localstorage.getAllLists() :
      * Returns an array with all lists in the localstorage
@@ -126,31 +129,16 @@ angular.module('app.services', [])
                     item = JSON.parse(localStorage.getItem(i));
                     if (item.type === "List"){
                             words.push(item);
-
                     }
                 } catch (err) {
                     console.warn("not a json: [" + localStorage.getItem(i) + "] ...deleted");
                     localStorage.removeItem(i);
                 }
-      } 
+      }
       return words;
     },
-
-    /*
-    
-    */
-
     getList: function(id) {
       return JSON.parse($window.localStorage[id] || '{}');
     }
-
   }
-}])
-
-
-
-
-.service('BlankService', [function(){
-
 }]);
-

@@ -24,7 +24,7 @@ angular.module('app.controllers', [])
 
 .controller('gamePad', function($scope, $localstorage, $state, WordSetup) {
     var first, gameData, index;
-
+    $scope.correct = false;
     $scope.$on('$ionicView.enter', function() {
         $scope.styles = [];
         gameData = $localstorage.getObject('current_game');
@@ -69,31 +69,35 @@ angular.module('app.controllers', [])
             $state.go("app.summary");
         }
     })
-    //TODO: outsource the styles to a CSS
-
+    //TODO: GamePad: outsource the styles to a CSS
+    //TODO: GamePad: Buttons still turn red after two tries, next button doesnt appear when 2 wrong guesses
     $scope.checkChar = function(c, pos) {
         if(c == first){
             $scope.styles[pos] = {'background-color' : 'green'};
-            console.log("correct");
-            console.log($scope.styles);
+            $scope.correct = true;
+            WordSetup.replaceAllButCorrect($scope.chars, first);
         } else {
-            if (gameData.words[index].attempts < 2){
+            if (gameData.words[index].attempts < 2 && !$scope.correct){
                 gameData.words[index].attempts = 2;
                 $localstorage.setObject('current_game', gameData);
                 WordSetup.replaceSixChars($scope.chars, first);
             } else {
-                $scope.styles[pos] = {'background-color' : 'red'};
-                for (var i in $scope.chars){
-                    if ($scope.chars[i] === first){
-                        $scope.styles[i] = {'background-color' : 'green'};
-                        break;
+                if(c.match(/[A-Z]/i)) {
+                    $scope.styles[pos] = {'background-color' : 'red'};
+                    for (var i in $scope.chars){
+                        if ($scope.chars[i] === first){
+                            $scope.styles[i] = {'background-color' : 'green'};
+                            break;
+                        }
                     }
                 }
-                console.log("wrong");
             }
         }
     }
 
+    $scope.next = function() {
+        location.reload();
+    }
 })
 
 .controller('settingsCtrl', function($scope, $ionicHistory, $localstorage, $state, $window) {
@@ -135,7 +139,7 @@ angular.module('app.controllers', [])
 })
 
 .controller('addListCtrl', function($scope, $http, $ionicPlatform, $localstorage, $window, $state) {
-
+    // TODO: AddList: cancel button missing
     $scope.newList = {};
     $http.get('data/words.json').success(function(data) {
         $scope.words = data;

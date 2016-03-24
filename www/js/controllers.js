@@ -69,6 +69,7 @@ angular.module('app.controllers', [])
             $state.go("app.summary");
         }
     })
+    //TODO: Change name of Settings to Edit Lists
     //TODO: GamePad: outsource the styles to a CSS
     //TODO: GamePad: Buttons still turn red after two tries, next button doesnt appear when 2 wrong guesses
     $scope.checkChar = function(c, pos) {

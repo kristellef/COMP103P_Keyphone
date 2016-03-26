@@ -69,6 +69,7 @@ angular.module('app.controllers', [])
             $state.go("app.summary");
         }
     })
+    //TODO: record time for guessing a word
     //TODO: Change name of Settings to Edit Lists
     //TODO: GamePad: outsource the styles to a CSS
     //TODO: GamePad: Buttons still turn red after two tries, next button doesnt appear when 2 wrong guesses
@@ -109,9 +110,20 @@ angular.module('app.controllers', [])
         location.reload();
     }
     $scope.lists = $localstorage.getAllLists();
-
+    var settings;
     $scope.$on('$ionicView.enter', function() {
         $scope.lists = $localstorage.getAllLists();
+        var settings = $localstorage.getObject('settings');
+        // check if var settings ins empty
+        if (Object.keys(settings).length == 0){
+            // create new settings object
+            settings = {
+                speakWords : true
+            }
+            // save it in localstorage
+            $localstorage.setObject('settings', settings);
+        }
+        $scope.settings = settings;
     });
 
     if($scope.lists.length > 0){
@@ -131,6 +143,13 @@ angular.module('app.controllers', [])
     $scope.deleteList = function() {
         localStorage.removeItem(selected);
         $window.location.reload();
+    }
+
+    $scope.clickWordSpeak = function() {
+        $scope.settings.speakWords = !$scope.settings.speakWords;
+        console.log($scope.settings);
+        $localstorage.setObject('settings', $scope.settings);
+
     }
 
 })

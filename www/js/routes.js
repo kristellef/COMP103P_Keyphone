@@ -115,6 +115,16 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('app.speakCheck', {
+      url: '/speakCheck',
+      views : {
+          'menuContent' : {
+              templateUrl : 'templates/speakCheck.html',
+              controller : 'speakCheckCtrl'
+          }
+      }
+  })
+
 $urlRouterProvider.otherwise('/app/start')
 
 });

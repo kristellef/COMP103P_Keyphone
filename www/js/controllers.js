@@ -24,7 +24,7 @@ angular.module('app.controllers', [])
 
 .controller('gamePad', function($scope, $localstorage, $state, WordSetup) {
     var first, gameData, index;
-    $scope.correct = false;
+    $scope.nextModal = false;
     $scope.$on('$ionicView.enter', function() {
         $scope.styles = [];
         gameData = $localstorage.getObject('current_game');
@@ -69,14 +69,14 @@ angular.module('app.controllers', [])
             $state.go("app.summary");
         }
     })
+
     //TODO: record time for guessing a word
     //TODO: Change name of Settings to Edit Lists
     //TODO: GamePad: outsource the styles to a CSS
-    //TODO: GamePad: Buttons still turn red after two tries, next button doesnt appear when 2 wrong guesses
     $scope.checkChar = function(c, pos) {
         if(c == first){
             $scope.styles[pos] = {'background-color' : 'green'};
-            $scope.correct = true;
+            $scope.nextModal = true;
             WordSetup.replaceAllButCorrect($scope.chars, first);
         } else {
             if (gameData.words[index].attempts < 2 && !$scope.correct){
@@ -84,6 +84,7 @@ angular.module('app.controllers', [])
                 $localstorage.setObject('current_game', gameData);
                 WordSetup.replaceSixChars($scope.chars, first);
             } else {
+                $scope.nextModal = true;
                 if(c.match(/[A-Z]/i)) {
                     $scope.styles[pos] = {'background-color' : 'red'};
                     for (var i in $scope.chars){
@@ -98,7 +99,15 @@ angular.module('app.controllers', [])
     }
 
     $scope.next = function() {
-        location.reload();
+        // check if speakCheck should be done
+        var settings = $localstorage.getObject('settings');
+        if (settings.speakCheck){
+            $state.transitionTo('app.speakCheck');
+        } else {
+            $state.transitionTo('app.gamePad', null, {reload: true, notify:true});
+
+
+        }
     }
 })
 
@@ -118,7 +127,7 @@ angular.module('app.controllers', [])
         if (Object.keys(settings).length == 0){
             // create new settings object
             settings = {
-                speakWords : true
+                speakCheck : true
             }
             // save it in localstorage
             $localstorage.setObject('settings', settings);
@@ -146,7 +155,7 @@ angular.module('app.controllers', [])
     }
 
     $scope.clickWordSpeak = function() {
-        $scope.settings.speakWords = !$scope.settings.speakWords;
+        $scope.settings.speakCheck = !$scope.settings.speakCheck;
         console.log($scope.settings);
         $localstorage.setObject('settings', $scope.settings);
 
@@ -241,4 +250,17 @@ angular.module('app.controllers', [])
 
 .controller('AppCtrl', function($scope) {
 
+})
+
+.controller('speakCheckCtrl', function($scope, $state) {
+    $scope.check = function(x) {
+        if(x){
+            //TODO Save the correct/wrong data into to object in $localstorage
+            // set word to correct
+            $state.go('app.gamePad', null, {reload: true, notify:true});
+        } else {
+            // set word to false
+            $state.go('app.gamePad', null, {reload: true, notify:true});
+        }
+    }
 })

@@ -253,6 +253,9 @@ angular.module('app.controllers', [])
 })
 
 .controller('speakCheckCtrl', function($scope, $state) {
+    // plugin for text - 2 - speech
+    //http://devgirl.org/2016/01/08/speaking-with-cordova/
+
     $scope.check = function(x) {
         if(x){
             //TODO Save the correct/wrong data into to object in $localstorage

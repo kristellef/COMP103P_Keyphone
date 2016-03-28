@@ -1,6 +1,5 @@
 angular.module('app.services', [])
 
-
 .factory('WordSetup', [function($scope){
   return {
     createRandomCharArray : function(first) {

@@ -80,18 +80,18 @@ angular.module('app.controllers', [])
         }
     }
 
+    $scope.showIcon = function(c) {
+        return c != ' ' && $scope.nextModal && c == first;
+    }
+
     $scope.checkChar = function(c, pos) {
         if($scope.nextModal) {
-            if(c == " "){
-                return;
-            } else {
+            if(c == first){
                 $audioPlayer.play(c, c);
-                return;
             }
         }
-
         // do nothing if empty button is clicked
-        if(c == ' '){
+        if(c == ' ' || $scope.nextModal){
             return;
         }
 

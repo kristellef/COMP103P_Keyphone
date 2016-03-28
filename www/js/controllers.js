@@ -22,10 +22,11 @@ angular.module('app.controllers', [])
     }
 })
 
-.controller('gamePad', function($scope, $localstorage, $state, WordSetup) {
+.controller('gamePad', function($scope, $localstorage, $state, $audioPlayer, WordSetup) {
     var first, gameData, index;
     $scope.nextModal = false;
     $scope.$on('$ionicView.enter', function() {
+        $scope.nextModal = false;
         $scope.styles = [];
         gameData = $localstorage.getObject('current_game');
         console.log(gameData);
@@ -71,9 +72,20 @@ angular.module('app.controllers', [])
     })
 
     //TODO: record time for guessing a word
+    //TODO: play audio on click
     //TODO: Change name of Settings to Edit Lists
     //TODO: GamePad: outsource the styles to a CSS
     $scope.checkChar = function(c, pos) {
+        if($scope.nextModal == true){
+            if(c == " "){
+                return;
+            } else {
+                var track = 'data/audio/' + c + '.wav';
+                $audioPlayer.play(track, c);
+                return;
+            }
+        }
+
         if(c == first){
             $scope.styles[pos] = {'background-color' : 'green'};
             $scope.nextModal = true;
@@ -158,13 +170,10 @@ angular.module('app.controllers', [])
         $scope.settings.speakCheck = !$scope.settings.speakCheck;
         console.log($scope.settings);
         $localstorage.setObject('settings', $scope.settings);
-
     }
-
 })
 
 .controller('page20Ctrl', function($scope) {
-
 })
 
 .controller('addListCtrl', function($scope, $http, $ionicPlatform, $localstorage, $window, $state) {

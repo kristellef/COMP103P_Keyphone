@@ -4,7 +4,7 @@
     </ion-nav-buttons>
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         <div style="text-align:center;">
-            <img src="data/img/{{word}}.jpg" width="40%" height="auto">
+            <img ng-src="data/img/{{word}}.jpg" width="40%" height="auto">
         </div>
         <div class="button-bar">
             <a ng-click="checkChar(chars[0], 0)"ng-style="styles[0]" class="button button-stable button-block">{{chars[0]}}</a>

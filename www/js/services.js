@@ -83,6 +83,7 @@ angular.module('app.services', [])
     play: function(track, key) {
         if(ionic.Platform.isAndroid() ||
     ionic.Platform.isIOS()){
+        var track = 'data/audio/' + track + '.wav';
             if(player.key != key){
                     if(player.key != '') {
                         window.plugins.NativeAudio.unload(player.key);

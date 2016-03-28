@@ -72,16 +72,20 @@ angular.module('app.controllers', [])
     })
 
     //TODO: record time for guessing a word
-    //TODO: play audio on click
     //TODO: Change name of Settings to Edit Lists
     //TODO: GamePad: outsource the styles to a CSS
+    $scope.playImage = function(word){
+        if($scope.nextModal){
+            $audioPlayer.play(word, word);
+        }
+    }
+
     $scope.checkChar = function(c, pos) {
-        if($scope.nextModal == true){
+        if($scope.nextModal) {
             if(c == " "){
                 return;
             } else {
-                var track = 'data/audio/' + c + '.wav';
-                $audioPlayer.play(track, c);
+                $audioPlayer.play(c, c);
                 return;
             }
         }

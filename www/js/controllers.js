@@ -90,6 +90,11 @@ angular.module('app.controllers', [])
             }
         }
 
+        // do nothing if empty button is clicked
+        if(c == ' '){
+            return;
+        }
+
         if(c == first){
             $scope.styles[pos] = {'background-color' : 'green'};
             $scope.nextModal = true;

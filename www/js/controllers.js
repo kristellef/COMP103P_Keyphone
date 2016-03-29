@@ -23,6 +23,9 @@ angular.module('app.controllers', [])
 })
 
 .controller('gamePad', function($scope, $localstorage, $state, $audioPlayer, WordSetup) {
+
+    //TODO: set endGame to false if game is finished
+
     var first, gameData, index;
     $scope.nextModal = false;
     $scope.$on('$ionicView.enter', function() {
@@ -59,24 +62,24 @@ angular.module('app.controllers', [])
                 });
             }
             gameData.activeWords--;
-            // change attempt to 1
-            gameData.words[index].attempts = 1;
             // change played = true
             gameData.words[index].played = true;
             // update localstorage game
             $localstorage.setObject('current_game', gameData);
             //console.log($localstorage.getObject('current_game'));
         } else {
+            $localstorage.setObject('current_game', gameData);
             $state.go("app.summary");
         }
     })
-
+    // TODO documentation of the code for next programmers
     //TODO: record time for guessing a word
     //TODO: Change name of Settings to Edit Lists
     //TODO: GamePad: outsource the styles to a CSS
     $scope.playImage = function(word){
         if($scope.nextModal){
             $audioPlayer.play(word, word);
+            return;
         }
     }
 
@@ -88,6 +91,7 @@ angular.module('app.controllers', [])
         if($scope.nextModal) {
             if(c == first){
                 $audioPlayer.play(c, c);
+                return;
             }
         }
         // do nothing if empty button is clicked
@@ -95,13 +99,20 @@ angular.module('app.controllers', [])
             return;
         }
 
+        // if code gets here, attempt was made
+        gameData.words[index].attempts++;
+        console.log(gameData.words[index].attempts);
         if(c == first){
+            // first increment the attempts
+            // correct guess!
             $scope.styles[pos] = {'background-color' : 'green'};
             $scope.nextModal = true;
+            gameData.words[index].solved = true;
+            $localstorage.setObject('current_game', gameData);
             WordSetup.replaceAllButCorrect($scope.chars, first);
         } else {
             if (gameData.words[index].attempts < 2 && !$scope.correct){
-                gameData.words[index].attempts = 2;
+
                 $localstorage.setObject('current_game', gameData);
                 WordSetup.replaceSixChars($scope.chars, first);
             } else {
@@ -126,8 +137,6 @@ angular.module('app.controllers', [])
             $state.transitionTo('app.speakCheck');
         } else {
             $state.transitionTo('app.gamePad', null, {reload: true, notify:true});
-
-
         }
     }
 })
@@ -284,4 +293,64 @@ angular.module('app.controllers', [])
             $state.go('app.gamePad', null, {reload: true, notify:true});
         }
     }
+})
+
+.controller('summaryCtrl', function($scope, $localstorage, $state, GameDataCreator) {
+    var data;
+    var correct;
+    var wrong;
+    var saidCorrectly;
+    $scope.$on('$ionicView.enter', function() {
+        // reset all data
+        data = {};
+        correct = [0,0]; // [0],[1] correct on 1st,2nd attempt
+        wrong = [0,0]; // same here
+        saidCorrectly = 0;
+
+
+        data = $localstorage.getObject('current_game');
+        for(var i = 0, len = data.words.length; i < len; i++){
+            word = data.words[i];
+            console.log(word);
+            if(word.solved){
+                if(word.attempts < 2){
+                    correct[0]++;
+                } else {
+                    correct[1]++;
+                }
+            } else {
+                if(word.attempts == 1){
+                    wrong[0]++;
+                } else {
+                    wrong[1]++;
+                }
+            }
+
+            if(word.saidCorrectly){
+                saidCorrectly++;
+            }
+
+        }
+
+        $scope.correct = correct[0];
+        $scope.withHelp = correct[1];
+        $scope.wrong = wrong[0] + wrong[1];
+        $scope.saidCorrectly = saidCorrectly;
+    });
+
+    $scope.redo = function(){
+        $localstorage.setObject('current_game',
+            GameDataCreator.createGameData($localstorage.getList(data.id)));
+        $state.go('app.gamePad', null, {reload: true, notify:true});
+    }
+
+    $scope.otherList = function() {
+        $state.go('app.chooseList', null, {reload: true, notify:true});
+    }
+
+    $scope.home = function() {
+        $state.go('app.start', null, {reload: true, notify:true});
+    }
+
+
 })

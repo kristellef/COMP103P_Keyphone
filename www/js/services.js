@@ -1,5 +1,7 @@
 angular.module('app.services', [])
 
+// TODO: collect data on every click and send it AWS endpoint
+
 .factory('WordSetup', [function($scope){
   return {
     createRandomCharArray : function(first) {
@@ -59,12 +61,14 @@ angular.module('app.services', [])
       gameData.name = list.name;
       gameData.activeWords = list.words.length;
       gameData.words = [];
+      gameData.finished = false;
       for(var i in list.words) {
         w = {};
         w.word = list.words[i];
         w.played = false;
         w.solved = false;
         w.attempts = 0;
+        w.saidCorrectly = false;
         gameData.words.push(w);
       }
       return gameData;

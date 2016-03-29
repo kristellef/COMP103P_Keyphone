@@ -125,6 +125,16 @@ angular.module('app.routes', [])
       }
   })
 
+  .state('app.summary', {
+      url : '/summary',
+      views : {
+          'menuContent' : {
+              templateUrl : 'templates/summary.html',
+              controller : 'summaryCtrl'
+          }
+      }
+  })
+
 $urlRouterProvider.otherwise('/app/start')
 
 });

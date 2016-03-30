@@ -26,7 +26,7 @@ angular.module('app.controllers', [])
 
     //TODO: set endGame to false if game is finished
 
-    var first, gameData, index;
+    var first, gameData, index, startTime;
     $scope.nextModal = false;
     $scope.$on('$ionicView.enter', function() {
         $scope.nextModal = false;
@@ -64,6 +64,7 @@ angular.module('app.controllers', [])
             gameData.activeWords--;
             // change played = true
             gameData.words[index].played = true;
+            startTime = (new Date()).getTime();
             // update localstorage game
             $localstorage.setObject('current_game', gameData);
             //console.log($localstorage.getObject('current_game'));
@@ -73,7 +74,6 @@ angular.module('app.controllers', [])
         }
     })
     // TODO documentation of the code for next programmers
-    //TODO: record time for guessing a word
     //TODO: Change name of Settings to Edit Lists
     //TODO: GamePad: outsource the styles to a CSS
     $scope.playImage = function(word){
@@ -101,9 +101,10 @@ angular.module('app.controllers', [])
 
         // if code gets here, attempt was made
         gameData.words[index].attempts++;
-        console.log(gameData.words[index].attempts);
+        // safe/update the time needed for the word
+        gameData.words[index].time = (new Date()).getTime() - startTime;
+
         if(c == first){
-            // first increment the attempts
             // correct guess!
             $scope.styles[pos] = {'background-color' : 'green'};
             $scope.nextModal = true;
@@ -112,10 +113,11 @@ angular.module('app.controllers', [])
             WordSetup.replaceAllButCorrect($scope.chars, first);
         } else {
             if (gameData.words[index].attempts < 2 && !$scope.correct){
-
+                // wrong guess, but not 2 attempts yet
                 $localstorage.setObject('current_game', gameData);
                 WordSetup.replaceSixChars($scope.chars, first);
             } else {
+                // all attempts made
                 $scope.nextModal = true;
                 if(c.match(/[A-Z]/i)) {
                     $scope.styles[pos] = {'background-color' : 'red'};

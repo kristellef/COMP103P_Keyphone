@@ -58,12 +58,15 @@ angular.module('app.services', [])
     createGameData: function(list) {
       var gameData = {};
       gameData.id = list._id;
+      gameData.startTime = (new Date).getTime();
+      gameData.endTime;
       gameData.name = list.name;
       gameData.activeWords = list.words.length;
       gameData.words = [];
       gameData.finished = false;
       for(var i in list.words) {
         w = {};
+        w.time = 0;
         w.word = list.words[i];
         w.played = false;
         w.solved = false;

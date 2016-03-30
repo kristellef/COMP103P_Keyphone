@@ -24,8 +24,6 @@ angular.module('app.controllers', [])
 
 .controller('gamePad', function($scope, $localstorage, $state, $audioPlayer, WordSetup) {
 
-    //TODO: set endGame to false if game is finished
-
     var first, gameData, index, startTime;
     $scope.nextModal = false;
     $scope.$on('$ionicView.enter', function() {
@@ -69,6 +67,8 @@ angular.module('app.controllers', [])
             $localstorage.setObject('current_game', gameData);
             //console.log($localstorage.getObject('current_game'));
         } else {
+            // game is finished, save time and go to summary
+            gameData.endTime = (new Date).getTime();
             $localstorage.setObject('current_game', gameData);
             $state.go("app.summary");
         }

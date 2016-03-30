@@ -287,7 +287,6 @@ angular.module('app.controllers', [])
 
     $scope.check = function(x) {
         if(x){
-            //TODO Save the correct/wrong data into to object in $localstorage
             // set word to correct
             $state.go('app.gamePad', null, {reload: true, notify:true});
         } else {

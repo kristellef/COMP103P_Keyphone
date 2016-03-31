@@ -20,7 +20,7 @@
     <ion-footer-bar class="bar footer-bar footer-button">
         <a ng-click="deleteList()" ng-hide="!lists.length" class="button button-positive button-outline icon ion-trash-b"> Delete</a>
         <a ng-click="editList()" ng-hide="!lists.length" class="button button-positive button-outline icon ion-compose"> Edit</a>
-        <a ui-sref="app.addList" class="button button-positive button-outline icon ion-plus"> Add</a>
+        <a ng-click="add()" class="button button-positive button-outline icon ion-plus"> Add</a>
         <a ng-click="delete()" ng-hide="!lists.length" class="button button-positive button-assertive button-outline icon ion-clean"> Clear All DATA</a>
     </ion-footer-bar>
 </ion-view>

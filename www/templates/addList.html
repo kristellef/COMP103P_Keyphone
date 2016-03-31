@@ -1,6 +1,6 @@
 <ion-view title="Add List" ng-controller="addListCtrl" >
     <ion-content overflow-scroll="true" padding="true" class="has-header has-footer">
-        
+
             <ion-list>
                 <label class="item item-input">
                 <input type="text" placeholder="ListName" ng-model="newList.name">
@@ -12,11 +12,13 @@
                 <ion-item class="item-divider">A</ion-item>
 
                 <div ng-repeat="word in words | filter: search">
-                    <ion-checkbox ng-click="addWord('{{word}}')">{{ word }}</ion-checkbox>
+                    <ion-checkbox ng-click="addWord('{{word}}')"
+                    ng-model="checked">{{ word }}</ion-checkbox>
                 </div>
             </ion-list>
     </ion-content>
-     <ion-footer-bar class="bar bar-footer bar-positive footer-button">
-        <a class="button button-stable button-full button-clear" type="submit" ng-click="saveObj(newList.name)">Create new list</a>
+    <ion-footer-bar>
+            <a ng-click="saveObj(newList.name)" class="button button-stable icon ion-checkmark-round"style="width: 50%"> Create new list</a>
+            <button ng-click="abort()" class="button button-stable icon ion-close" style="width: 50%"> Cancel</button>
     </ion-footer-bar>
 </ion-view>

@@ -181,6 +181,10 @@ angular.module('app.controllers', [])
         $state.go('app.editList', { ListID: selected , reload : true})
     }
 
+    $scope.add = function() {
+        $state.go('app.addList', {reload: true , reload : true})
+    }
+
     $scope.deleteList = function() {
         localStorage.removeItem(selected);
         $window.location.reload();
@@ -197,11 +201,17 @@ angular.module('app.controllers', [])
 })
 
 .controller('addListCtrl', function($scope, $http, $ionicPlatform, $localstorage, $window, $state) {
-    // TODO: AddList: cancel button missing
-    $scope.newList = {};
-    $http.get('data/words.json').success(function(data) {
-        $scope.words = data;
+    var words = [];
+
+    $scope.$on('$ionicView.enter', function() {
+        
+        $scope.newList = {};
+        $http.get('data/words.json').success(function(data) {
+            $scope.words = data;
+        });
+        $scope.checked = false;
     });
+
 
     // localStorage for words
     var words = [];
@@ -221,6 +231,15 @@ angular.module('app.controllers', [])
 
     $scope.saveObj = function() {
         var _id = new Date().getTime();
+        // prepare an arr containing all words
+        // in order to safe them into the db
+
+        tmp_words = [];
+        for(var i = 0; i < words.length; i++){
+            tmp_words.push(words[i].word);
+        }
+
+        // save to db
         $localstorage.setObject(_id, {
             type: 'List',
             _id : _id,
@@ -229,6 +248,11 @@ angular.module('app.controllers', [])
         });
         $state.go('app.settings');
     };
+
+    $scope.abort = function() {
+
+        $state.go('app.settings');
+    }
 })
 
 .controller('editListCtrl', function($scope, $http, $localstorage, $ionicPlatform, $stateParams, $state, $window) {

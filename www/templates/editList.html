@@ -1,4 +1,4 @@
-<ion-view title="Edit list">
+<ion-view title="Edit list" class="pane" >
     <ion-content overflow-scroll="true" padding="true" class="has-header has-footer">
     <h1>{{list.name}}</h1>
         <ion-list>
@@ -10,3 +10,9 @@
             <button ng-click="abort()" class="button button-stable icon ion-close" style="width: 50%"> Cancel</button>
     </ion-footer-bar>
 </ion-view>
+<style type="text/css">
+.pane{
+background:url(../img/background1.png) no-repeat center center fixed; 
+        background-size: cover;
+}
+</style>

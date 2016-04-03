@@ -1,10 +1,20 @@
-<ion-view title="Choose list">
+<ion-view title="Choose list" class="pane">
     <ion-nav-buttons side="left">
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
     </ion-nav-buttons>
     <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <a ng-repeat="list in lists" ng-click="chosenList(list._id)" class="button button-stable button-block ">
+        <a ng-repeat="list in lists" ng-click="chosenList(list._id)" class="liststyle button button-block ">
         {{list.name}}</a>
 
     </ion-content>
 </ion-view>
+<style type="text/css">
+.pane{
+background:url(../img/background1.png) no-repeat center center fixed; 
+        background-size: cover;
+}
+.liststyle{
+    font-size:15px;color:#63B8FF;text-align:center;text-decoration: none;background: #F0F8FF;font-weight:bold;border-radius: 12px; border: 2px solid #C6E2FF;margin-bottom: 30px;
+}
+</style>
+

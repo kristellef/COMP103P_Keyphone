@@ -75,16 +75,6 @@ angular.module('app.routes', [])
     }
   })
 
-  .state('app.page20', {
-    url: '/page20',
-    views : {
-        'menuContent' : {
-            templateUrl: 'templates/page20.html',
-            controller: 'page20Ctrl'
-        }
-    }
-  })
-
   .state('app.editList', {
     url: '/editList/:ListID',
     views : {

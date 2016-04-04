@@ -2,8 +2,8 @@
     <ion-nav-buttons side="left">
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
     </ion-nav-buttons>
-    <ion-content overflow-scroll="true" padding="true" class="has-header has-footer">
-        <h4>Activate Speak Word Controll</h4>
+    <ion-content overflow-scroll="true" padding="true" class=" has-header has-footer">
+        <h4 class="color2">Activate Speak Word Controll</h4>
         <label class="toggle"
          ng-click="clickWordSpeak()">
             <input ng-checked="settings.speakCheck" type="checkbox">
@@ -11,53 +11,21 @@
                 <div class="handle"></div>
             </div>
         </label>
+        <div class="spacetop2"></div>
         <h3  class="color" ng-hide="!lists.length">Choose your list</h3>
         <h3 class="color" ng-hide="lists.length"> No Lists </h3>
         <div class="space5"></div>
             <div ng-repeat="list in lists">
-                <ion-radio ng-click="select({{list._id}})">{{list.name}}</ion-radio>
+                <ion-radio class="liststyle" ng-click="select({{list._id}})">{{list.name}}</ion-radio>
             </div>
     </ion-content>
     <ion-footer-bar class="barcolor footer-bar footer-button">
-        <a ng-click="deleteList()" ng-hide="!lists.length" class="btn1 button-positive button-outline icon ion-trash-b"> Delete</a>
+        <a ng-click="deleteList()" ng-hide="!lists.length" class="btn1 icon ion-trash-b"> Delete</a>
           <div class="space4"></div>
-        <a ng-click="editList()" ng-hide="!lists.length" class="btn1 button-positive button-outline icon ion-compose"> Edit</a>
+        <a ng-click="editList()" ng-hide="!lists.length" class="btn1 icon ion-compose"> Edit</a>
          <div class="space4"></div>
-        <a ng-click="add()" class="btn1 button-positive button-outline icon ion-plus"> Add</a>
+        <a ng-click="add()" class="btn1 icon ion-plus"> Add</a>
         <div class="space3"></div>
-        <a ng-click="delete()" ng-hide="!lists.length" class="btn2 button-positive button-assertive button-outline icon ion-clean"> Clear All DATA</a>
+        <a ng-click="delete()" ng-hide="!lists.length" class="btn2 icon ion-clean"> Clear All DATA</a>
     </ion-footer-bar>
 </ion-view>
-<style type="text/css">
-.btn1{
-    font-size:15px;color:#63B8FF;text-align:center;text-decoration: none;background:#fff;border-radius: 5px; border: 2px solid #fff;
-}
-.liststyle{
-    font-size:15px;color:#63B8FF;text-align:center;text-decoration: none;background: #F0F8FF;font-weight:bold;border-radius: 12px; border: 2px solid #C6E2FF;
-}
-.btn2{
-    font-size:15px;color:#FF3030;text-align:center;text-decoration: none;background:#fff;border-radius: 5px; border: 2px solid #fff;
-}
-.space3{
-    margin-right: 80px;
-}
-.barcolor{
-background-color: #fff;
-}
-.space4{
-    margin-right: 20px;
-}
-.space5{
-    margin-bottom: 30px;
-}
-.color{
-    text-align: center;
-    color:#63B8FF;
-    font-weight: bold;
-    
-}
-.pane{
-background:url(../img/background1.png) no-repeat center center fixed; 
-        background-size: cover;
-}
-</style>

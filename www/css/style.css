@@ -20,7 +20,7 @@ background:url(../data/img/background1.png) no-repeat center center fixed;
 .liststyle{
     font-size:15px;color:#63B8FF;text-align:center;text-decoration: none;background: #F0F8FF;font-weight:bold;border-radius: 12px; border: 2px solid #C6E2FF;margin-bottom: 30px;
 }
-.circle{display:block;width:85px;height:85px;border-radius:66px;border:4px double #C6E2FF;font-size:55px;color:#C6E2FF;line-height:85px;text-align:center;text-decoration:none;text-shadow:0 1px 0 #C6E2FF;background:#F0F8FF; font-weight:bold;}
+.circle{display:block;width:70px;height:70px;border-radius:66px;border:4px double #C6E2FF;font-size:30px;color:#C6E2FF;line-height:70px;text-align:center;text-decoration:none;text-shadow:0 1px 0 #C6E2FF;background:#F0F8FF; font-weight:bold;}
 .circle:hover{border:4px double #FFFFFF;color:#F0F8FF;text-decoration:none;background:#C6E2FF}
 
 .circle2{display:block;width:80px;height:80px;border-radius:70px;border:4px double #C6E2FF;font-size:30px;color:#C6E2FF;line-height:70px;text-align:center;text-decoration:none;text-shadow:0 1px 0 #C6E2FF;background:#F0F8FF; font-weight:bold}
@@ -97,6 +97,6 @@ background:url(../data/img/background1.png) no-repeat center top !important;
 }
 #wrapper {
 
-width: 400px;
+width: 350px;
 margin: 0 auto;
 }

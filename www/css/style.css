@@ -23,7 +23,7 @@ background:url(../data/img/background1.png) no-repeat center center fixed;
 .circle{display:block;width:85px;height:85px;border-radius:66px;border:4px double #C6E2FF;font-size:55px;color:#C6E2FF;line-height:85px;text-align:center;text-decoration:none;text-shadow:0 1px 0 #C6E2FF;background:#F0F8FF; font-weight:bold;}
 .circle:hover{border:4px double #FFFFFF;color:#F0F8FF;text-decoration:none;background:#C6E2FF}
 
-.circle2{display:block;width:80px;height:80px;border-radius:66px;border:4px double #C6E2FF;font-size:30px;color:#C6E2FF;line-height:80px;text-align:center;text-decoration:none;text-shadow:0 1px 0 #C6E2FF;background:#F0F8FF; font-weight:bold}
+.circle2{display:block;width:80px;height:80px;border-radius:70px;border:4px double #C6E2FF;font-size:30px;color:#C6E2FF;line-height:70px;text-align:center;text-decoration:none;text-shadow:0 1px 0 #C6E2FF;background:#F0F8FF; font-weight:bold}
 .circle2:hover{border:4px double #FFFFFF;color:#F0F8FF;text-decoration:none;background:#C6E2FF}
 .circle3{display:block;width:92px;height:92px;border-radius:66px;border:4px double #C6E2FF;font-size:20px;color:#C6E2FF;line-height:92px;text-align:center;text-decoration:none;text-shadow:0 1px 0 #C6E2FF;background:#F0F8FF; font-weight:bold;margin-left: 120px}
 .circle3:hover{border:4px double #FFFFFF;color:#F0F8FF;text-decoration:none;background:#C6E2FF}
@@ -89,4 +89,14 @@ background:url(../data/img/background1.png) no-repeat center top !important;
     height: 200px;
     width:200px;
     border: 2px solid #C6E2FF;
+}
+.center {
+    margin: auto;
+    width: 60%;
+   
+}
+#wrapper {
+
+width: 400px;
+margin: 0 auto;
 }

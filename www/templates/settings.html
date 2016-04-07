@@ -15,11 +15,11 @@
         <h3  class="color" ng-hide="!lists.length">Choose your list</h3>
         <h3 class="color" ng-hide="lists.length"> No Lists </h3>
         <div class="space5"></div>
-            <div ng-repeat="list in lists">
-                <ion-radio class="liststyle" ng-click="select({{list._id}})">{{list.name}}</ion-radio>
+            <div ng-repeat="list in lists" class="btn3">
+                <ion-radio class="btn3" ng-click="select({{list._id}})">{{list.name}}</ion-radio>
             </div>
     </ion-content>
-    <ion-footer-bar class="footer footer-bar footer-button">
+    <ion-footer-bar class="footer footer-bar footer-button" id="wrapper">
         <a ng-click="deleteList()" ng-hide="!lists.length" class="color icon ion-trash-b"> Delete</a>
           <div class="space4"></div>
         <a ng-click="editList()" ng-hide="!lists.length" class="color icon ion-compose"> Edit</a>

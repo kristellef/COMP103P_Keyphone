@@ -88,6 +88,7 @@ background:url(../data/img/background1.png) no-repeat center top !important;
 .image{
     height: 200px;
     width:200px;
+    border-radius: 30px;
     border: 2px solid #C6E2FF;
 }
 .center {
@@ -97,6 +98,23 @@ background:url(../data/img/background1.png) no-repeat center top !important;
 }
 #wrapper {
 
-width: 350px;
+width: 100%;
 margin: 0 auto;
 }
+#wrapper2 {
+
+width: 360px;
+margin: 0 auto;
+}
+@media (max-width: 768px) {.circle{width:100%} .circle2{width:100px;} .circle3{width:100%;}}    
+@media (min-width: 768px) {.circle{width:100%} .circle2{width:100px;} .circle3{width:100%;}}
+@media (min-width: 992px) {.circle{width:100%} .circle2{width:100px;} .circle3{width:100%;}.image{
+    height: 230px;
+    width:230px;
+    border: 2px solid #C6E2FF;
+}}
+@media (min-width: 1200px) {.circle{width:100%} .circle2{width:100px;} .circle3{width:100%;}.image{
+    height: 300px;
+    width:300px;
+    border: 2px solid #C6E2FF;
+}}

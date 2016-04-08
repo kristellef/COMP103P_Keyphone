@@ -187,7 +187,36 @@ angular.module('app.services', [])
   }
 }])
 
-.factory('$localstorage', ['$window', function($window) {
+.factory('$localstorage', ['$window', function($window)
+  /* Factory $localstorage
+   * This factory manages saving all the data in any kind of
+   * database. Currently, just localStorage is used.
+   * The App requires the following 4 functions:
+   *    setObject: function(cstring key, obj value)
+   *        The object value must be transformable to
+   *        to a json-string
+   *
+   *    getObject: function(key)
+   *        Reads an entry from the database with the
+   *        key. Transforms the Json object from the
+   *        db into a javascript object. If there is no
+   *        object with this key, it returns an empty
+   *        object.
+   *
+   *    getAllLists: function()
+   *        Returns an array of all lists from the
+   *        database.
+   *        obj list:
+   *            {
+   *                string type
+   *                int _id
+   *                string name
+   *                string[] words
+   *            }
+   *
+   *    getList: function(int id)
+   *        Returns the List with the ID or an empty obj
+   */
   return {
     setObject: function(key, value) {
       $window.localStorage[key] = JSON.stringify(value);
@@ -195,22 +224,9 @@ angular.module('app.services', [])
     getObject: function(key) {
       return JSON.parse($window.localStorage[key] || '{}');
     },
-    /*
-     * $localstorage.getAllLists() :
-     * Returns an array with all lists in the localstorage
-     * [
-     *  {
-     *    type : String,
-     *    _id  : Number,
-     *    name : String,
-     *    words: String[]
-     *  }
-     * ]
-     */
     getAllLists: function() {
       var words = [];
       for (var i in localStorage){
-        //console.log(localStorage.getItem(i));
             // just in case there are "non-jsons in the local-storage"
             try {
                     item = JSON.parse(localStorage.getItem(i));

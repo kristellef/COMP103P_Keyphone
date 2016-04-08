@@ -5,7 +5,6 @@ angular.module('app.controllers', [])
 })
 
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer) {
-
     $ionicPlatform.ready(function() {
         $scope.playTrack = $audioPlayer.play;
     })
@@ -16,6 +15,8 @@ angular.module('app.controllers', [])
         $scope.lists = $localstorage.getAllLists();
     });
     $scope.chosenList = function(id) {
+        // Store the data of the upcoming game into the db,
+        // under the key 'current_game'
         $localstorage.setObject('current_game',
             GameDataCreator.createGameData($localstorage.getList(id)));
         $state.go("app.gamePad");
@@ -23,14 +24,19 @@ angular.module('app.controllers', [])
 })
 
 .controller('gamePad', function($scope, $localstorage, $state, $audioPlayer, WordSetup) {
-
     var first, gameData, index, startTime;
+    // nextModal is used for the visibility of the the
+    // "next" button, which enables the user to go
+    // to the next word
     $scope.nextModal = false;
+
+    // load all the data when entering the modal
     $scope.$on('$ionicView.enter', function() {
         $scope.nextModal = false;
         $scope.styles = [];
         gameData = $localstorage.getObject('current_game');
-        console.log(gameData);
+        // If there are still words to guess, select the next
+        // one randomly
         if(gameData.activeWords > 0) {
             // get a random word
             var rand = Math.floor(gameData.activeWords * Math.random());
@@ -47,7 +53,6 @@ angular.module('app.controllers', [])
                 }
             }
             $scope.word = (gameData.words[index].word);
-            //console.log(gameData.words[index].word);
             // now get the first char of the word
             // and generate 8 other random cars
             first = (gameData.words[index].word.charAt(0)).toUpperCase();
@@ -65,7 +70,6 @@ angular.module('app.controllers', [])
             startTime = (new Date()).getTime();
             // update localstorage game
             $localstorage.setObject('current_game', gameData);
-            //console.log($localstorage.getObject('current_game'));
         } else {
             // game is finished, save time and go to summary
             gameData.endTime = (new Date).getTime();
@@ -73,10 +77,13 @@ angular.module('app.controllers', [])
             $state.go("app.summary");
         }
     })
-    // TODO documentation of the code for next programmers
-    //TODO: Change name of Settings to Edit Lists
-    //TODO: GamePad: outsource the styles to a CSS
+
     $scope.playImage = function(word){
+        /* This function plays the sound of the word
+         * word must not contain the path and the
+         * file-ending, jsut the name: eg."dog"
+         * will play www/data/audio/dog.wav
+         */
         if($scope.nextModal){
             $audioPlayer.play(word, word);
             return;
@@ -84,10 +91,27 @@ angular.module('app.controllers', [])
     }
 
     $scope.showIcon = function(c) {
+        // hides all the Icons of empty chars,
+        // at the end of the game
         return c != ' ' && $scope.nextModal && c == first;
     }
 
     $scope.checkChar = function(c, pos) {
+        /* checkChar = function(char c, int pos)
+         * This function controlls, what should happen
+         * if the user clicks a button/char on the
+         * gamePad
+         *
+         * If the Game is over (nextModal == true)
+         * then it shouldn't play any character
+         * sound ut the correct one -> first
+         * If the game isn't over, it should
+         * hide 6 characters if it's the first
+         * attempt, or show the result, if it's
+         * the second attempt
+         * The function also updates the
+         * gamestatus accordingly
+         */
         if($scope.nextModal) {
             if(c == first){
                 $audioPlayer.play(c, c);
@@ -204,7 +228,7 @@ angular.module('app.controllers', [])
     var words = [];
 
     $scope.$on('$ionicView.enter', function() {
-        
+
         $scope.newList = {};
         $http.get('data/words.json').success(function(data) {
             $scope.words = data;

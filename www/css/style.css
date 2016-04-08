@@ -122,7 +122,7 @@ margin: 0 auto;
     height: 200px;
     width:200px;
     border: 2px solid #C6E2FF;}
-    
+
 } 
 
 @media (min-width: 768px) {
@@ -160,4 +160,16 @@ margin: 0 auto;
 width: 200px;
 margin: 0 auto;
 }
+.color{
+    text-align: center;
+    color:#63B8FF;
+    font-size:10px;
+    
+}
+.color3{
+    color:red;
+    font-size:10px;
+    text-align: center;
+}
+
 }

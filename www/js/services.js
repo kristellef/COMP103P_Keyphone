@@ -187,7 +187,7 @@ angular.module('app.services', [])
   }
 }])
 
-.factory('$localstorage', ['$window', function($window)
+.factory('$localstorage', ['$window', function($window){
   /* Factory $localstorage
    * This factory manages saving all the data in any kind of
    * database. Currently, just localStorage is used.

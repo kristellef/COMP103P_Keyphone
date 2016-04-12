@@ -5,6 +5,8 @@ angular.module('app.controllers', [])
 })
 
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer) {
+    // TODO on modal enter start a new dailyUseSessions
+    // TODO on modal exit finish session
     $ionicPlatform.ready(function() {
         $scope.playTrack = $audioPlayer.play;
     })
@@ -143,8 +145,13 @@ angular.module('app.controllers', [])
             } else {
                 // all attempts made
                 $scope.nextModal = true;
+
+                // check if the clicked button is a character
                 if(c.match(/[A-Z]/i)) {
+                    // turn the clicked character red
                     $scope.styles[pos] = {'background-color' : 'red'};
+
+                    // search for the correct character and make it green
                     for (var i in $scope.chars){
                         if ($scope.chars[i] === first){
                             $scope.styles[i] = {'background-color' : 'green'};
@@ -159,6 +166,8 @@ angular.module('app.controllers', [])
     $scope.next = function() {
         // check if speakCheck should be done
         var settings = $localstorage.getObject('settings');
+        // check if user has an active speakCheck, if so
+        // go to speakcheck page
         if (settings.speakCheck){
             $state.transitionTo('app.speakCheck');
         } else {
@@ -216,26 +225,19 @@ angular.module('app.controllers', [])
 
     $scope.clickWordSpeak = function() {
         $scope.settings.speakCheck = !$scope.settings.speakCheck;
-        console.log($scope.settings);
         $localstorage.setObject('settings', $scope.settings);
     }
 })
 
-.controller('page20Ctrl', function($scope) {
-})
-
 .controller('addListCtrl', function($scope, $http, $ionicPlatform, $localstorage, $window, $state) {
     var words = [];
-
     $scope.$on('$ionicView.enter', function() {
-
         $scope.newList = {};
         $http.get('data/words.json').success(function(data) {
             $scope.words = data;
         });
         $scope.checked = false;
     });
-
 
     // localStorage for words
     var words = [];
@@ -257,7 +259,6 @@ angular.module('app.controllers', [])
         var _id = new Date().getTime();
         // prepare an arr containing all words
         // in order to safe them into the db
-
         tmp_words = [];
         for(var i = 0; i < words.length; i++){
             tmp_words.push(words[i].word);
@@ -320,12 +321,8 @@ angular.module('app.controllers', [])
     }
 })
 
-.controller('addWordsCtrl', function($scope) {
-
-})
-
 .controller('AppCtrl', function($scope) {
-
+    // nothing to do here....
 })
 
 .controller('speakCheckCtrl', function($scope, $state) {
@@ -374,7 +371,6 @@ angular.module('app.controllers', [])
             if(word.saidCorrectly){
                 saidCorrectly++;
             }
-
         }
 
         $scope.correct = correct[0];
@@ -396,6 +392,4 @@ angular.module('app.controllers', [])
     $scope.home = function() {
         $state.go('app.start', null, {reload: true, notify:true});
     }
-
-
 })

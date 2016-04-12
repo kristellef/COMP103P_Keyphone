@@ -1,3 +1,9 @@
+/* Written by Janos Potecki
+ * University College London Term 2/3 - 2015/2016
+ * for Course: COMP103P
+ * www.github.com/jpotecki
+ * janos dot potecki dot 15 et ucl dot ac dot uk
+ */
 angular.module('app.controllers', [])
 
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer) {

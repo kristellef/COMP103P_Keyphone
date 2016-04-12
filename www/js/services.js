@@ -1,6 +1,91 @@
 angular.module('app.services', [])
 
-// TODO: collect data on every click and send it AWS endpoint
+.factory('Data', [function($scope){
+        /* Factory Data
+         * createData : function()
+         *  Creates an obj Data
+         *      {
+         *          int     numDailyUse
+         *          int     timeDailyUse
+         *          obj     gamesArchive
+         *          obj[]   dailyUseSessions
+         *      }
+         * getNumDailyUse : function(data)
+         *  Return the total amount of how often
+         *  the user started practising the
+         *  dailyUse
+         *
+         * getTimeDailyUse : function(data) :
+         *  Returns the total time the user spend
+         *  practising the dailyUse
+         *
+         * getDailyUseObj : function(data)
+         *  returns an obj[] which contains details
+         *  for each day practising daily use
+         *
+         * getDailyUseCharStatistics : function(data)
+         *  Retunrs an obj[] where the number of
+         *  clicks per character are listed
+         *
+         * getNumPractiseStarted : function(data)
+         *  returns the total amount of practises the
+         *  user started
+         *
+         * getNumPractiseFinished : function(data)
+         *  returns the total amount of practises the
+         *  user started but hasn't finished
+         *
+         * getMostPractisedWord : function(data)
+         *  returns an string[] word, which contains
+         *  the mostly practised words, eg.:
+         *      if the data contains hat::3 , fish::3,
+         *                           tiger :: 2, egg::1
+         *  it returns [hat, fish]
+         *
+         * getTopCorrectWord : function(data)
+         *  returns an array with the words, which where
+         *  guessed the most time correct
+         *
+         * getTopWrongWord : function(data)
+         *  returns an array with the most incorrect words
+         *
+         * getPractiseByDay : function(word)
+         *  returns a obj which contains when the user practised
+         *  by day of the week:
+         *      {
+         *          int     mon
+         *          int     tue
+         *          int     wed
+         *          int     thu
+         *          int     fri
+         *          int     sat
+         *          int     sun
+         *      }
+         *
+         *
+         *
+         * addGame : function (obj game, obj data) :
+         *  takes a game and adds it to the obj data
+         *  and returns the updated data obj
+         */
+         return {
+             createArchive : function(){
+                 var archive = {};
+                 archive.games = [];
+                 return archive;
+             },
+
+             addGame : function(game, archive){
+                 if(!game || !archive){
+                     // error, one of the obj
+                     // is empty
+                     return;
+                 }
+                 archive.games.push(game);
+                 return archive;
+             }
+         }
+}])
 
 .factory('WordSetup', [function($scope){
     /* Factory WordSetup

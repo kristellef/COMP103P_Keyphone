@@ -274,7 +274,6 @@ angular.module('app.controllers', [])
     };
 
     $scope.abort = function() {
-
         $state.go('app.settings');
     }
 })
@@ -330,9 +329,6 @@ angular.module('app.controllers', [])
 })
 
 .controller('speakCheckCtrl', function($scope, $state) {
-    // plugin for text - 2 - speech
-    //http://devgirl.org/2016/01/08/speaking-with-cordova/
-
     $scope.check = function(x) {
         if(x){
             // set word to correct
@@ -356,11 +352,12 @@ angular.module('app.controllers', [])
         wrong = [0,0]; // same here
         saidCorrectly = 0;
 
-
+        // get the current state of the game from the db
         data = $localstorage.getObject('current_game');
+
+        // parse the words
         for(var i = 0, len = data.words.length; i < len; i++){
             word = data.words[i];
-            console.log(word);
             if(word.solved){
                 if(word.attempts < 2){
                     correct[0]++;
@@ -374,7 +371,6 @@ angular.module('app.controllers', [])
                     wrong[1]++;
                 }
             }
-
             if(word.saidCorrectly){
                 saidCorrectly++;
             }

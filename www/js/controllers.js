@@ -1,9 +1,5 @@
 angular.module('app.controllers', [])
 
-.controller('startCtrl', function($scope) {
-
-})
-
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer) {
     // TODO on modal enter start a new dailyUseSessions
     // TODO on modal exit finish session
@@ -287,7 +283,7 @@ angular.module('app.controllers', [])
         var all_words = data;
         // create a array with the words as objects
         var words = [];
-        for(var i in all_words){
+        for(var i = 0, len = all_words.length; i < len; i++){
             words.push({word: all_words[i], checked: false});
         }
         // get all words from the list
@@ -301,12 +297,14 @@ angular.module('app.controllers', [])
                 }
             }
         }
+        // update the scope
         $scope.words = words;
         });
 
     $scope.save = function(){
         words = [];
-        for(var i in $scope.words){
+        //for(var i in $scope.words){
+        for(var i = 0, len = $scope.words.length; i < len; i++){
             if($scope.words[i].checked === true){
                 words.push($scope.words[i].word);
             }
@@ -325,9 +323,14 @@ angular.module('app.controllers', [])
     // nothing to do here....
 })
 
+.controller('startCtrl', function($scope) {
+    // nothing to do here...
+})
+
 .controller('speakCheckCtrl', function($scope, $state) {
     $scope.check = function(x) {
         if(x){
+            // TODO update the status in the game obj
             // set word to correct
             $state.go('app.gamePad', null, {reload: true, notify:true});
         } else {

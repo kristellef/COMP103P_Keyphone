@@ -19,7 +19,7 @@ angular.module('app.services', [])
          *  Returns the total time the user spend
          *  practising the dailyUse
          *
-         * getDailyUseObj : function(data)
+         * getDailyUseArr : function(data)
          *  returns an obj[] which contains details
          *  for each day practising daily use
          *
@@ -69,20 +69,63 @@ angular.module('app.services', [])
          *  and returns the updated data obj
          */
          return {
-             createArchive : function(){
-                 var archive = {};
-                 archive.games = [];
-                 return archive;
+             createData : function() {
+                 var data = {};
+                 data.numDailyUse = 0;
+                 data.timeDailyUse = 0;
+                 data.gamesArchive = [];
+                 data.dailyUseSessions = [];
+                 return data;
              },
-
-             addGame : function(game, archive){
-                 if(!game || !archive){
+             getNumDailyUse : function(data){
+                return data.numDailyUse;
+             },
+             getTimeDailyUse : function(data) {
+                return data.timeDailyUse;
+             },
+             getDailyUseArr : function(data) {
+                 return data.dailyUseSessions;
+             },
+             getDailyUseCharStatistics : function(data) {
+                 // TODO getDailyUseCharStatistics
+                 return NULL;
+             },
+             getNumPractiseStarted : function(data){
+                 return data.gamesArchive.length;
+             },
+             getNumPractiseFinished : function(data){
+                var counter = 0;
+                for (var i = 0, len = data.gamesArchive.length; i < len; i++){
+                    if(data.gamesArchive[i].finished){
+                        counter++;
+                    }
+                }
+                return counter;
+             },
+             getMostPractisedWord : function(data){
+                 // TODO getMostPractisedWord
+                 return NULL;
+             },
+             getTopCorrectWord : function(data) {
+                 // TODO getTopCorrectWord
+                 return NULL;
+             },
+             getTopWrongWord : function(data){
+                 //TODO getTopWrongWord
+                 return NULL;
+             },
+             getPractiseByDay : function(word){
+                 //TODO getPractiseByDay
+                 return NULL;
+             },
+             addGame : function(game, data){
+                 if(!game || !data){
                      // error, one of the obj
                      // is empty
                      return;
                  }
-                 archive.games.push(game);
-                 return archive;
+                 data.gamesArchive.push(game);
+                 return data;
              }
          }
 }])

@@ -244,7 +244,7 @@ angular.module('app.services', [])
       gameData.activeWords = list.words.length;
       gameData.finished = false;
       gameData.words = [];
-      for(var i = 0; i<list.words.length; i++) {
+      for(var i = 0; i < list.words.length; i++) {
         w = {};
         w.time = 0;
         w.word = list.words[i];

@@ -124,6 +124,7 @@ angular.module('app.routes', [])
           }
       }
   })
+// TODO add a router for the statistics website
 
 $urlRouterProvider.otherwise('/app/start')
 

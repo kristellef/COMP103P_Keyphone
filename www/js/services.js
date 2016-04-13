@@ -1,6 +1,140 @@
+/* Written by Janos Potecki
+ * University College London Term 2/3 - 2015/2016
+ * for Course: COMP103P
+ * www.github.com/jpotecki
+ * janos dot potecki dot 15 et ucl dot ac dot uk
+ */
 angular.module('app.services', [])
 
-// TODO: collect data on every click and send it AWS endpoint
+.factory('Data', [function($scope){
+        /* Factory Data
+         * createData : function()
+         *  Creates an obj Data
+         *      {
+         *          int     numDailyUse
+         *          int     timeDailyUse
+         *          obj     gamesArchive
+         *          obj[]   dailyUseSessions
+         *      }
+         * getNumDailyUse : function(data)
+         *  Return the total amount of how often
+         *  the user started practising the
+         *  dailyUse
+         *
+         * getTimeDailyUse : function(data) :
+         *  Returns the total time the user spend
+         *  practising the dailyUse
+         *
+         * getDailyUseArr : function(data)
+         *  returns an obj[] which contains details
+         *  for each day practising daily use
+         *
+         * getDailyUseCharStatistics : function(data)
+         *  Retunrs an obj[] where the number of
+         *  clicks per character are listed
+         *
+         * getNumPractiseStarted : function(data)
+         *  returns the total amount of practises the
+         *  user started
+         *
+         * getNumPractiseFinished : function(data)
+         *  returns the total amount of practises the
+         *  user started but hasn't finished
+         *
+         * getMostPractisedWord : function(data)
+         *  returns an string[] word, which contains
+         *  the mostly practised words, eg.:
+         *      if the data contains hat::3 , fish::3,
+         *                           tiger :: 2, egg::1
+         *  it returns [hat, fish]
+         *
+         * getTopCorrectWord : function(data)
+         *  returns an array with the words, which where
+         *  guessed the most time correct
+         *
+         * getTopWrongWord : function(data)
+         *  returns an array with the most incorrect words
+         *
+         * getPractiseByDay : function(word)
+         *  returns a obj which contains when the user practised
+         *  by day of the week:
+         *      {
+         *          int     mon
+         *          int     tue
+         *          int     wed
+         *          int     thu
+         *          int     fri
+         *          int     sat
+         *          int     sun
+         *      }
+         *
+         *
+         *
+         * addGame : function (obj game, obj data) :
+         *  takes a game and adds it to the obj data
+         *  and returns the updated data obj
+         */
+         return {
+             createData : function() {
+                 var data = {};
+                 data.numDailyUse = 0;
+                 data.timeDailyUse = 0;
+                 data.gamesArchive = [];
+                 data.dailyUseSessions = [];
+                 return data;
+             },
+             getNumDailyUse : function(data){
+                return data.numDailyUse;
+             },
+             getTimeDailyUse : function(data) {
+                return data.timeDailyUse;
+             },
+             getDailyUseArr : function(data) {
+                 return data.dailyUseSessions;
+             },
+             getDailyUseCharStatistics : function(data) {
+                 // TODO getDailyUseCharStatistics
+                 return NULL;
+             },
+             getNumPractiseStarted : function(data){
+                 return data.gamesArchive.length;
+             },
+             getNumPractiseFinished : function(data){
+                var counter = 0;
+                for (var i = 0, len = data.gamesArchive.length; i < len; i++){
+                    if(data.gamesArchive[i].finished){
+                        counter++;
+                    }
+                }
+                return counter;
+             },
+             getMostPractisedWord : function(data){
+                 // TODO getMostPractisedWord
+                 return NULL;
+             },
+             getTopCorrectWord : function(data) {
+                 // TODO getTopCorrectWord
+                 return NULL;
+             },
+             getTopWrongWord : function(data){
+                 //TODO getTopWrongWord
+                 return NULL;
+             },
+             getPractiseByDay : function(word){
+                 //TODO getPractiseByDay
+                 return NULL;
+             },
+             addGame : function(game, data){
+                 if(!game || !data){
+                     // error, one of the obj
+                     // is empty
+                     return;
+                 }
+                 data.gamesArchive.push(game);
+                 return data;
+             }
+         }
+}])
 
 .factory('WordSetup', [function($scope){
     /* Factory WordSetup
@@ -116,7 +250,7 @@ angular.module('app.services', [])
       gameData.activeWords = list.words.length;
       gameData.finished = false;
       gameData.words = [];
-      for(var i = 0; i<list.words.length; i++) {
+      for(var i = 0; i < list.words.length; i++) {
         w = {};
         w.time = 0;
         w.word = list.words[i];

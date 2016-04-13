@@ -1,11 +1,13 @@
-<ion-view title="Add List" ng-controller="addListCtrl" >
+<ion-view title="Add List" ng-controller="addListCtrl" class="pane" >
     <ion-content overflow-scroll="true" padding="true" class="has-header has-footer">
         <!--
         TODO: add google voice recongnizion here
         http://devgirl.org/2016/01/08/speaking-with-cordova/
         -->
-        <h2>Did you say the word correctly</h2>
-        <a class="button button-positive" ng-click="check(true)">Yes</a>
-        <a class="button button-positive" ng-click="check(false)">No</a>
+        <h2 class="color">Did you say the word correctly</h2>
+         <div class="space6"></div>
+        <a class="circle3 button-positive" ng-click="check(true)" id="wrapper2">Yes</a>
+          <div class="space6"></div>
+        <a class="circle3 button-positive" ng-click="check(false)" id="wrapper2">No</a>
     </ion-footer-bar>
 </ion-view>

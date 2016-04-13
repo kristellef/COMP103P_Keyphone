@@ -1,10 +1,14 @@
+/* Written by Janos Potecki
+ * University College London Term 2/3 - 2015/2016
+ * for Course: COMP103P
+ * www.github.com/jpotecki
+ * janos dot potecki dot 15 et ucl dot ac dot uk
+ */
 angular.module('app.controllers', [])
 
-.controller('startCtrl', function($scope) {
-
-})
-
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer) {
+    // TODO on modal enter start a new dailyUseSessions
+    // TODO on modal exit finish session
     $ionicPlatform.ready(function() {
         $scope.playTrack = $audioPlayer.play;
     })
@@ -143,8 +147,13 @@ angular.module('app.controllers', [])
             } else {
                 // all attempts made
                 $scope.nextModal = true;
+
+                // check if the clicked button is a character
                 if(c.match(/[A-Z]/i)) {
+                    // turn the clicked character red
                     $scope.styles[pos] = {'background-color' : 'red'};
+
+                    // search for the correct character and make it green
                     for (var i in $scope.chars){
                         if ($scope.chars[i] === first){
                             $scope.styles[i] = {'background-color' : 'green'};
@@ -159,6 +168,8 @@ angular.module('app.controllers', [])
     $scope.next = function() {
         // check if speakCheck should be done
         var settings = $localstorage.getObject('settings');
+        // check if user has an active speakCheck, if so
+        // go to speakcheck page
         if (settings.speakCheck){
             $state.transitionTo('app.speakCheck');
         } else {
@@ -216,26 +227,19 @@ angular.module('app.controllers', [])
 
     $scope.clickWordSpeak = function() {
         $scope.settings.speakCheck = !$scope.settings.speakCheck;
-        console.log($scope.settings);
         $localstorage.setObject('settings', $scope.settings);
     }
 })
 
-.controller('page20Ctrl', function($scope) {
-})
-
 .controller('addListCtrl', function($scope, $http, $ionicPlatform, $localstorage, $window, $state) {
     var words = [];
-
     $scope.$on('$ionicView.enter', function() {
-
         $scope.newList = {};
         $http.get('data/words.json').success(function(data) {
             $scope.words = data;
         });
         $scope.checked = false;
     });
-
 
     // localStorage for words
     var words = [];
@@ -257,7 +261,6 @@ angular.module('app.controllers', [])
         var _id = new Date().getTime();
         // prepare an arr containing all words
         // in order to safe them into the db
-
         tmp_words = [];
         for(var i = 0; i < words.length; i++){
             tmp_words.push(words[i].word);
@@ -274,7 +277,6 @@ angular.module('app.controllers', [])
     };
 
     $scope.abort = function() {
-
         $state.go('app.settings');
     }
 })
@@ -287,7 +289,7 @@ angular.module('app.controllers', [])
         var all_words = data;
         // create a array with the words as objects
         var words = [];
-        for(var i in all_words){
+        for(var i = 0, len = all_words.length; i < len; i++){
             words.push({word: all_words[i], checked: false});
         }
         // get all words from the list
@@ -301,12 +303,14 @@ angular.module('app.controllers', [])
                 }
             }
         }
+        // update the scope
         $scope.words = words;
         });
 
     $scope.save = function(){
         words = [];
-        for(var i in $scope.words){
+        //for(var i in $scope.words){
+        for(var i = 0, len = $scope.words.length; i < len; i++){
             if($scope.words[i].checked === true){
                 words.push($scope.words[i].word);
             }
@@ -321,20 +325,18 @@ angular.module('app.controllers', [])
     }
 })
 
-.controller('addWordsCtrl', function($scope) {
-
+.controller('AppCtrl', function($scope) {
+    // nothing to do here....
 })
 
-.controller('AppCtrl', function($scope) {
-
+.controller('startCtrl', function($scope) {
+    // nothing to do here...
 })
 
 .controller('speakCheckCtrl', function($scope, $state) {
-    // plugin for text - 2 - speech
-    //http://devgirl.org/2016/01/08/speaking-with-cordova/
-
     $scope.check = function(x) {
         if(x){
+            // TODO update the status in the game obj
             // set word to correct
             $state.go('app.gamePad', null, {reload: true, notify:true});
         } else {
@@ -356,11 +358,12 @@ angular.module('app.controllers', [])
         wrong = [0,0]; // same here
         saidCorrectly = 0;
 
-
+        // get the current state of the game from the db
         data = $localstorage.getObject('current_game');
+
+        // parse the words
         for(var i = 0, len = data.words.length; i < len; i++){
             word = data.words[i];
-            console.log(word);
             if(word.solved){
                 if(word.attempts < 2){
                     correct[0]++;
@@ -374,11 +377,9 @@ angular.module('app.controllers', [])
                     wrong[1]++;
                 }
             }
-
             if(word.saidCorrectly){
                 saidCorrectly++;
             }
-
         }
 
         $scope.correct = correct[0];
@@ -400,6 +401,4 @@ angular.module('app.controllers', [])
     $scope.home = function() {
         $state.go('app.start', null, {reload: true, notify:true});
     }
-
-
 })

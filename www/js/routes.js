@@ -1,3 +1,9 @@
+/* Written by Janos Potecki
+ * University College London Term 2/3 - 2015/2016
+ * for Course: COMP103P
+ * www.github.com/jpotecki
+ * janos dot potecki dot 15 et ucl dot ac dot uk
+ */
 angular.module('app.routes', [])
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -124,6 +130,7 @@ angular.module('app.routes', [])
           }
       }
   })
+// TODO add a router for the statistics website
 
 $urlRouterProvider.otherwise('/app/start')
 

@@ -1,6 +1,6 @@
-<ion-view title="Edit list" class="pane" >
+<ion-view title="Edit list" class="pane">
     <ion-content overflow-scroll="true" padding="true" class="has-header has-footer">
-    <h1 class="color">{{list.name}}</h1>
+    <h1>{{list.name}}</h1>
         <ion-list>
             <ion-checkbox ng-repeat="word in words" ng-checked="word.checked" ng-model="word.checked"name="{{word.word}}">{{word.word}}</ion-checkbox>
         </ion-list>

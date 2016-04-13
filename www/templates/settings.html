@@ -1,8 +1,12 @@
-<ion-view title="Settings" class="pane">
+<!-- TODO Add a button which navigates to the statistcs data
+     TODO Create a Statistics template
+ -->
+
+<ion-view title="Settings">
     <ion-nav-buttons side="left">
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
     </ion-nav-buttons>
-    <ion-content overflow-scroll="true" padding="true" class=" has-header has-footer">
+    <ion-content overflow-scroll="true" padding="true" class="has-header has-footer">
         <h4 class="color2">Activate Speak Word Controll</h4>
         <label class="toggle toggle-calm"
          ng-click="clickWordSpeak()">
@@ -12,20 +16,20 @@
             </div>
         </label>
         <div class="spacetop2"></div>
-        <h3  class="color" ng-hide="!lists.length">Choose your list</h3>
+        <h3 class="color" ng-hide="!lists.length">Choose your list</h3>
         <h3 class="color" ng-hide="lists.length"> No Lists </h3>
         <div class="space5"></div>
-            <div ng-repeat="list in lists" class="btn3">
-                <ion-radio class="btn3" ng-click="select({{list._id}})">{{list.name}}</ion-radio>
+            <div ng-repeat="list in lists" class="liststyle">
+                <ion-radio ng-click="select({{list._id}})" class="liststyle">{{list.name}}</ion-radio>
             </div>
     </ion-content>
     <ion-footer-bar class="footer footer-bar footer-button" id="wrapper3">
         <a ng-click="deleteList()" ng-hide="!lists.length" class="color icon ion-trash-b"> Delete</a>
-          <div class="space4"></div>
+        <div class="space4"></div>
         <a ng-click="editList()" ng-hide="!lists.length" class="color icon ion-compose"> Edit</a>
-         <div class="space4"></div>
+        <div class="space4"></div>
         <a ng-click="add()" class="color icon ion-plus"> Add</a>
-        <div class="space3"></div>
+         <div class="space3"></div>
         <a ng-click="delete()" ng-hide="!lists.length" class="color3 icon ion-clean"> Clear All DATA</a>
     </ion-footer-bar>
 </ion-view>

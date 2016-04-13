@@ -6,8 +6,9 @@
  */
 angular.module('app.services', [])
 
-.factory('Data', [function($scope){
+.factory('$key_data', [function($scope, $localstorage){
         /* Factory Data
+         *
          * createData : function()
          *  Creates an obj Data
          *      {
@@ -73,6 +74,14 @@ angular.module('app.services', [])
          * addGame : function (obj game, obj data) :
          *  takes a game and adds it to the obj data
          *  and returns the updated data obj
+         *
+         * addDailyPractise : function (data, practise)
+         *  adds a daily practise to the dataset and
+         *  returns the dataset
+         *
+         * startDailyPractise : function (data)
+         *  Increases the internal counter for
+         *  the daily practises
          */
          return {
              createData : function() {
@@ -94,7 +103,7 @@ angular.module('app.services', [])
              },
              getDailyUseCharStatistics : function(data) {
                  // TODO getDailyUseCharStatistics
-                 return NULL;
+                 return data;
              },
              getNumPractiseStarted : function(data){
                  return data.gamesArchive.length;
@@ -110,28 +119,36 @@ angular.module('app.services', [])
              },
              getMostPractisedWord : function(data){
                  // TODO getMostPractisedWord
-                 return NULL;
+                 return data;
              },
              getTopCorrectWord : function(data) {
                  // TODO getTopCorrectWord
-                 return NULL;
+                 return data;
              },
              getTopWrongWord : function(data){
                  //TODO getTopWrongWord
-                 return NULL;
+                 return data;
              },
-             getPractiseByDay : function(word){
+             getPractiseByDay : function(data, word){
                  //TODO getPractiseByDay
-                 return NULL;
+                 return data;
              },
-             addGame : function(game, data){
-                 if(!game || !data){
-                     // error, one of the obj
-                     // is empty
+             addDailyPractise : function(data) {
+                 //TODO addDailyPractise
+                 return data;
+             },
+             startDailyPractise : function(data) {
+                 data.numDailyUse = 0;
+                 return data;
+             },
+             addGame : function(game){
+                 if(!game){
+                     // game is empty
                      return;
                  }
+                 var data = $localstorage.getData();
                  data.gamesArchive.push(game);
-                 return data;
+                 $localstorage.saveData(data);
              }
          }
 }])
@@ -321,7 +338,7 @@ angular.module('app.services', [])
   }
 }])
 
-.factory('$localstorage', ['$window', function($window){
+.factory('$localstorage', ['$window', function($window, $key_data){
   /* Factory $localstorage
    * This factory manages saving all the data in any kind of
    * database. Currently, just localStorage is used.
@@ -347,6 +364,13 @@ angular.module('app.services', [])
    *                string name
    *                string[] words
    *            }
+   *    getData : function()
+   *        Takes the data out from the database,
+   *        if there doesn't exist any, it creates
+   *        one and returns it
+   *
+   *    saveDate : function(data)
+   *        saves the data object into the database
    *
    *    getList: function(int id)
    *        Returns the List with the ID or an empty obj
@@ -373,6 +397,17 @@ angular.module('app.services', [])
                 }
       }
       return words;
+    },
+    getData : function(){
+        var data = JSON.parse($window.localStorage['keyphone_data']);
+        if (!data) {
+            data = $key_data.createData();
+            $window.localStorage['keyphone_data'] = JSON.stringify(data);
+        }
+        return data;
+    },
+    saveData : function(data){
+        $window.localStorage['keyphone_data'] = JSON.stringify(data);
     },
     getList: function(id) {
       return JSON.parse($window.localStorage[id] || '{}');

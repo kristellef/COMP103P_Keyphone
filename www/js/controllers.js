@@ -6,8 +6,11 @@
  */
 angular.module('app.controllers', [])
 
-.controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer) {
+.controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $data) {
+    var data = $localstorage.getData();
+    data = $data.startDailyPractise(data);
     // TODO on modal enter start a new dailyUseSessions
+
     // TODO on modal exit finish session
     $ionicPlatform.ready(function() {
         $scope.playTrack = $audioPlayer.play;

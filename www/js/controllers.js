@@ -14,11 +14,14 @@ angular.module('app.controllers', [])
             data = $key_data.createData();
             $localstorage.saveData(data);
         };
+    console.log("numdailyuse: " + $key_data.getNumDailyUse(data));
+    console.log("time minutes: " + $key_data.getTimeDailyUseMinutes(data));
     console.log("most played words: " + $key_data.getMostPractisedWord(data));
     console.log("most correct words: " + $key_data.getTopCorrectWord(data));
     console.log("most correct words: " + $key_data.getTopWrongWord(data));
     console.log("started practises: " + $key_data.getNumPractiseStarted(data));
     console.log("finished practises: " + $key_data.getNumPractiseFinished(data));
+    console.log("practises by day: " + $key_data.getPractiseByDay(data));
     console.log(data);
 })
 

@@ -56,20 +56,9 @@ angular.module('app.services', [])
          * getTopWrongWord : function(data)
          *  returns an array with the most incorrect words
          *
-         * getPractiseByDay : function(word)
-         *  returns a obj which contains when the user practised
-         *  by day of the week:
-         *      {
-         *          int     mon
-         *          int     tue
-         *          int     wed
-         *          int     thu
-         *          int     fri
-         *          int     sat
-         *          int     sun
-         *      }
-         *
-         *
+         * getPractiseByDay : function()
+         *  returns an int[] where arr[0] is sunday
+         *  and arr[1] monday .. arr[6] saturday
          *
          * addGame : function (obj game, obj data) :
          *  takes a game and adds it to the obj data
@@ -104,6 +93,11 @@ angular.module('app.services', [])
              },
              getTimeDailyUse : function(data) {
                 return data.timeDailyUse;
+             },
+             getTimeDailyUseMinutes : function(data) {
+                var time =  data.timeDailyUse;
+                time /= 1000 * 60;
+                return Math.floor(time * 100) / 100
              },
              getDailyUseArr : function(data) {
                  return data.dailyUseSessions;
@@ -205,9 +199,14 @@ angular.module('app.services', [])
                  }
                  return string_arr;
              },
-             getPractiseByDay : function(data, word){
-                 //TODO getPractiseByDay
-                 return data;
+             getPractiseByDay : function(data){
+                 var week = [0,0,0,0,0,0,0];
+                 var games = data.gamesArchive;
+                 for(var i = 0; i < games.length; i++){
+                    var day = new Date(Date.parse(games[i].startTime)).getDay();
+                    week[day]++;
+                 }
+                 return week;
              },
              addDailyUse : function(data, dayuse){
                  data.dailyUseSessions.push(dayuse);

@@ -6,6 +6,22 @@
  */
 angular.module('app.controllers', [])
 
+.controller('AppCtrl', function($scope, $localstorage, $key_data) {
+    // check if statisticsdata exists, if not,
+    /// create it
+    var data = $localstorage.getData();
+    if (Object.keys(data).length === 0 && JSON.stringify(data) === JSON.stringify({})){
+            data = $key_data.createData();
+            $localstorage.saveData(data);
+        };
+    console.log("most played words: " + $key_data.getMostPractisedWord(data));
+    console.log("most correct words: " + $key_data.getTopCorrectWord(data));
+    console.log("most correct words: " + $key_data.getTopWrongWord(data));
+    console.log("started practises: " + $key_data.getNumPractiseStarted(data));
+    console.log("finished practises: " + $key_data.getNumPractiseFinished(data));
+    console.log(data);
+})
+
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $key_data) {
     var data;
     var session;
@@ -101,7 +117,12 @@ angular.module('app.controllers', [])
             $localstorage.saveData(data);
         } else {
             // game is finished, save time and go to summary
+            // update statiscs data and safe (as usual)
             gameData.endTime = (new Date).getTime();
+            gameData.finished = true;
+            var data = $localstorage.getData();
+            data = $key_data.updateGame(data, gameData);
+            $localstorage.saveData(data);
             $localstorage.setObject('current_game', gameData);
             $state.go("app.summary");
         }
@@ -361,17 +382,6 @@ angular.module('app.controllers', [])
         $scope.list = ''
         $state.go("app.settings");
     }
-})
-
-.controller('AppCtrl', function($scope, $localstorage, $key_data) {
-    // check if statisticsdata exists, if not,
-    /// create it
-    var data = $localstorage.getData();
-    if (Object.keys(data).length === 0 && JSON.stringify(data) === JSON.stringify({})){
-            data = $key_data.createData();
-            $localstorage.saveData(data);
-        };
-    console.log($key_data.getMostPractisedWord(data));
 })
 
 .controller('startCtrl', function($scope) {

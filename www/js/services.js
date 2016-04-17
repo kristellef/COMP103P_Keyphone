@@ -149,16 +149,61 @@ angular.module('app.services', [])
                         break;
                     string_arr.push(arr[i].word);
                  }
-                 console.log(dic);
                  return string_arr;
              },
              getTopCorrectWord : function(data) {
-                 // TODO getTopCorrectWord
-                 return data;
+                 var dic = {};
+                 games = data.gamesArchive;
+                 for(var i = 0; i < games.length; i++){
+                     words = games[i].words;
+                     for(var j = 0; j < words.length; j++){
+                         var w = words[j];
+                         if (w.solved){
+                             dic[w.word] ? dic[w.word]++ : dic[w.word] = 1;
+                         }
+                     }
+                 }
+                 var arr = [];
+                 for(var key in dic){
+                     arr.push({num :dic[key], word : key});
+                 }
+                 arr.sort(function(x, y){
+                     return y.num - x.num;
+                 });
+                 string_arr = []
+                 for(i = 0; i < arr.length; i++){
+                     if(arr[0].num != arr[i].num)
+                        break;
+                    string_arr.push(arr[i].word);
+                 }
+                 return string_arr;
              },
              getTopWrongWord : function(data){
-                 //TODO getTopWrongWord
-                 return data;
+                 var dic = {};
+                 games = data.gamesArchive;
+                 for(var i = 0; i < games.length; i++){
+                     words = games[i].words;
+                     for(var j = 0; j < words.length; j++){
+                         var w = words[j];
+                         if (!w.solved && w.played){
+                             dic[w.word] ? dic[w.word]++ : dic[w.word] = 1;
+                         }
+                     }
+                 }
+                 var arr = [];
+                 for(var key in dic){
+                     arr.push({num :dic[key], word : key});
+                 }
+                 arr.sort(function(x, y){
+                     return y.num - x.num;
+                 });
+                 string_arr = []
+                 for(i = 0; i < arr.length; i++){
+                     if(arr[0].num != arr[i].num)
+                        break;
+                    string_arr.push(arr[i].word);
+                 }
+                 return string_arr;
              },
              getPractiseByDay : function(data, word){
                  //TODO getPractiseByDay

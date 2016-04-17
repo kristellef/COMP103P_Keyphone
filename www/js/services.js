@@ -142,18 +142,29 @@ angular.module('app.services', [])
              },
              addDailyUse : function(data, dayuse){
                  data.dailyUseSessions.push(dayuse);
+                 dayuse.end = new Date();
                  begin = dayuse.begin.getTime();
                  end = dayuse.end.getTime();
                  data.timeDailyUse += end - begin;
                  return data;
              },
-             addGame : function(game, data){
-                 if(!game){
-                     // game is empty
-                     return data;
+             updateGame : function(data, game){
+                 game.endTime = new Date();
+                 var index = game.index;
+                 if(index >= 0){
+                     data.gamesArchive[index] = game;
+                 } else {
+                     game.index =  data.gamesArchive.length;
+                     data.gamesArchive.push(game);
                  }
-                 data.gamesArchive.push(game);
+                 console.log(data);
                  return data;
+             },
+             addGame : function(data, game){
+                 data.gamesArchive.push(game);
+                 // return data and the index of the
+                 // game
+                 return [data, data.gamesArchive.length -1];
              }
          }
 }])
@@ -266,7 +277,11 @@ angular.module('app.services', [])
     createGameData: function(list) {
       var gameData = {};
       gameData.id = list._id;
-      gameData.startTime = (new Date).getTime();
+      // when created, save here the index in the
+      // data arr, in order to update the correct
+      // game
+      gameData.index;
+      gameData.startTime = new Date();
       gameData.endTime;
       gameData.name = list.name;
       gameData.activeWords = list.words.length;
@@ -397,7 +412,7 @@ angular.module('app.services', [])
                             words.push(item);
                     }
                 } catch (err) {
-                    console.warn("not a json: [" + localStorage.getItem(i) + "] ...deleted");
+                    //console.warn("not a json: [" + localStorage.getItem(i) + "] ...deleted");
                     localStorage.removeItem(i);
                 }
       }

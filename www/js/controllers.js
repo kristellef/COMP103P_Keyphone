@@ -16,6 +16,7 @@ angular.module('app.controllers', [])
 
     $ionicPlatform.ready(function() {
         $scope.playTrack = function(char, key){
+            // keep track of each char pressed
             // assume key for 'a' = 1
             session.char[key - 1]++;
             $audioPlayer.play(char, key);
@@ -23,27 +24,31 @@ angular.module('app.controllers', [])
     });
 
     $scope.$on('$ionicView.leave', function(){
-        session.end = new Date();
         data = $key_data.addDailyUse(data, session);
         $localstorage.saveData(data);
-        console.log(data);
     });
 })
 
-.controller('chooseListCtrl', function($scope, $localstorage, $state, GameDataCreator) {
+.controller('chooseListCtrl', function($scope, $localstorage, $state, GameDataCreator, $key_data) {
     $scope.$on('$ionicView.enter', function() {
         $scope.lists = $localstorage.getAllLists();
     });
     $scope.chosenList = function(id) {
         // Store the data of the upcoming game into the db,
         // under the key 'current_game'
-        $localstorage.setObject('current_game',
-            GameDataCreator.createGameData($localstorage.getList(id)));
+        var game = GameDataCreator.createGameData($localstorage.getList(id));
+        var data = $localstorage.getData();
+        [data, index] = $key_data.addGame(data, game);
+        game.index = index;
+        console.log(index);
+        data = $key_data.updateGame(data, game);
+        $localstorage.saveData(data);
+        $localstorage.setObject('current_game', game);
         $state.go("app.gamePad");
     }
 })
 
-.controller('gamePad', function($scope, $localstorage, $state, $audioPlayer, WordSetup) {
+.controller('gamePad', function($scope, $localstorage, $state, $audioPlayer, WordSetup, $key_data) {
     var first, gameData, index, startTime;
     // nextModal is used for the visibility of the the
     // "next" button, which enables the user to go
@@ -87,7 +92,7 @@ angular.module('app.controllers', [])
             gameData.activeWords--;
             // change played = true
             gameData.words[index].played = true;
-            startTime = (new Date()).getTime();
+            startTime = new Date();
             // update localstorage game
             $localstorage.setObject('current_game', gameData);
         } else {
@@ -95,6 +100,13 @@ angular.module('app.controllers', [])
             gameData.endTime = (new Date).getTime();
             $localstorage.setObject('current_game', gameData);
             $state.go("app.summary");
+        }
+    });
+    $scope.$on('ionicView.leave', function() {
+        if(gameData){
+            var data = $localstorage.getData();
+            data = $key_data.updateGame(data, gameData);
+            $localstorage.saveData(data);
         }
     })
 
@@ -146,7 +158,7 @@ angular.module('app.controllers', [])
         // if code gets here, attempt was made
         gameData.words[index].attempts++;
         // safe/update the time needed for the word
-        gameData.words[index].time = (new Date()).getTime() - startTime;
+        gameData.words[index].time = (new Date()).getTime() - startTime.getTime();
 
         if(c == first){
             // correct guess!
@@ -182,6 +194,12 @@ angular.module('app.controllers', [])
     }
 
     $scope.next = function() {
+        // update the gameData
+        if(gameData){
+            var data = $localstorage.getData();
+            data = $key_data.updateGame(data, gameData);
+            $localstorage.saveData(data);
+        }
         // check if speakCheck should be done
         var settings = $localstorage.getObject('settings');
         // check if user has an active speakCheck, if so

@@ -14,18 +14,34 @@ angular.module('app.controllers', [])
             data = $key_data.createData();
             $localstorage.saveData(data);
         };
-    console.log("numdailyuse: " + $key_data.getNumDailyUse(data));
-    console.log("time minutes: " + $key_data.getTimeDailyUseMinutes(data));
-    console.log("most played words: " + $key_data.getMostPractisedWord(data));
-    console.log("most correct words: " + $key_data.getTopCorrectWord(data));
-    console.log("most correct words: " + $key_data.getTopWrongWord(data));
-    console.log("started practises: " + $key_data.getNumPractiseStarted(data));
-    console.log("finished practises: " + $key_data.getNumPractiseFinished(data));
-    console.log("practises by day: " + $key_data.getPractiseByDay(data));
-    console.log("use of characters: " + $key_data.getDailyUseCharStatistics(data));
-    console.log(data);
 })
+.controller('StatCtrl', function($scope, $localstorage, $key_data, $ionicPlatform){
 
+    $ionicPlatform.ready(function(){
+        var data = $localstorage.getData();
+        $scope.NumDailyUse = $key_data.getNumDailyUse(data);
+        $scope.TimeDailyUseMinutes = $key_data.getTimeDailyUseMinutes(data);
+        $scope.MostPractisedWord = $key_data.getMostPractisedWord(data);
+        $scope.TopCorrectWord = $key_data.getTopCorrectWord(data);
+        $scope.TopWrongWord = $key_data.getTopWrongWord(data);
+        $scope.NumPractiseStarted = $key_data.getNumPractiseStarted(data);
+        $scope.NumPractiseFinished = $key_data.getNumPractiseFinished(data);
+        $scope.PractiseByDay = $key_data.getPractiseByDay(data);
+        $scope.DailyUseCharStatistics = $key_data.getDailyUseCharStatistics(data);
+
+
+        console.log("numdailyuse: " + $key_data.getNumDailyUse(data));
+        console.log("time minutes: " + $key_data.getTimeDailyUseMinutes(data));
+        console.log("most played words: " + $key_data.getMostPractisedWord(data));
+        console.log("most correct words: " + $key_data.getTopCorrectWord(data));
+        console.log("most wrong words: " + $key_data.getTopWrongWord(data));
+        console.log("started practises: " + $key_data.getNumPractiseStarted(data));
+        console.log("finished practises: " + $key_data.getNumPractiseFinished(data));
+        console.log("practises by day: " + $key_data.getPractiseByDay(data));
+        console.log("use of characters: " + $key_data.getDailyUseCharStatistics(data));
+        console.log(data);
+    })
+})
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $key_data) {
     var data;
     var session;

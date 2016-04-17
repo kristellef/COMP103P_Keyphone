@@ -20,6 +20,15 @@ angular.module('app.routes', [])
       templateUrl: 'templates/menu.html',
       controller: 'AppCtrl',
   })
+  .state('app.statistcs', {
+        url: '/statistics',
+        views : {
+            'menuContent' : {
+                templateUrl: 'templates/statistics.html',
+                controller: 'StatCtrl'
+            }
+        }
+  })
 
   .state('app.start', {
     url: '/start',

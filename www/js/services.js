@@ -143,7 +143,14 @@ angular.module('app.services', [])
                  arr.sort(function(x, y){
                      return y.num - x.num;
                  });
-                 return arr[0].word;
+                 string_arr = []
+                 for(i = 0; i < arr.length; i++){
+                     if(arr[0].num != arr[i].num)
+                        break;
+                    string_arr.push(arr[i].word);
+                 }
+                 console.log(dic);
+                 return string_arr;
              },
              getTopCorrectWord : function(data) {
                  // TODO getTopCorrectWord

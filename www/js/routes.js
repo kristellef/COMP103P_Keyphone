@@ -21,9 +21,11 @@ angular.module('app.routes', [])
       controller: 'AppCtrl',
   })
   .state('app.statistcs', {
+        cache: false,
         url: '/statistics',
         views : {
             'menuContent' : {
+
                 templateUrl: 'templates/statistics.html',
                 controller: 'StatCtrl'
             }
@@ -41,6 +43,7 @@ angular.module('app.routes', [])
   })
 
   .state('app.dailyUse', {
+    cache: false,
     url: '/dailyUse',
     views : {
         'menuContent' : {

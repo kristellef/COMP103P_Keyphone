@@ -15,8 +15,7 @@ angular.module('app.controllers', [])
             $localstorage.saveData(data);
         };
 })
-.controller('StatCtrl', function($scope, $localstorage, $key_data, $ionicPlatform){
-
+.controller('StatCtrl', function($scope, $localstorage, $key_data, $ionicPlatform, $location, $window){
     $ionicPlatform.ready(function(){
         var data = $localstorage.getData();
         $scope.NumDailyUse = $key_data.getNumDailyUse(data);
@@ -30,16 +29,16 @@ angular.module('app.controllers', [])
         $scope.DailyUseCharStatistics = $key_data.getDailyUseCharStatistics(data);
 
 
-        console.log("numdailyuse: " + $key_data.getNumDailyUse(data));
-        console.log("time minutes: " + $key_data.getTimeDailyUseMinutes(data));
-        console.log("most played words: " + $key_data.getMostPractisedWord(data));
-        console.log("most correct words: " + $key_data.getTopCorrectWord(data));
-        console.log("most wrong words: " + $key_data.getTopWrongWord(data));
-        console.log("started practises: " + $key_data.getNumPractiseStarted(data));
-        console.log("finished practises: " + $key_data.getNumPractiseFinished(data));
-        console.log("practises by day: " + $key_data.getPractiseByDay(data));
-        console.log("use of characters: " + $key_data.getDailyUseCharStatistics(data));
-        console.log(data);
+        // console.log("numdailyuse: " + $key_data.getNumDailyUse(data));
+        // console.log("time minutes: " + $key_data.getTimeDailyUseMinutes(data));
+        // console.log("most played words: " + $key_data.getMostPractisedWord(data));
+        // console.log("most correct words: " + $key_data.getTopCorrectWord(data));
+        // console.log("most wrong words: " + $key_data.getTopWrongWord(data));
+        // console.log("started practises: " + $key_data.getNumPractiseStarted(data));
+        // console.log("finished practises: " + $key_data.getNumPractiseFinished(data));
+        // console.log("practises by day: " + $key_data.getPractiseByDay(data));
+        // console.log("use of characters: " + $key_data.getDailyUseCharStatistics(data));
+        // console.log(data);
     })
 })
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $key_data) {
@@ -48,6 +47,7 @@ angular.module('app.controllers', [])
     $scope.$on('$ionicView.enter', function(){
         data = $localstorage.getData();
         session = $key_data.createSession();
+        data = $key_data.addDailyUse(data, session);
     });
 
     $ionicPlatform.ready(function() {
@@ -56,12 +56,10 @@ angular.module('app.controllers', [])
             // assume key for 'a' = 1
             session.char[key - 1]++;
             $audioPlayer.play(char, key);
+            // update session the database
+            data = $key_data.updateDailyUse(data, session);
+            $localstorage.saveData(data);
         }
-    });
-
-    $scope.$on('$ionicView.leave', function(){
-        data = $key_data.addDailyUse(data, session);
-        $localstorage.saveData(data);
     });
 })
 

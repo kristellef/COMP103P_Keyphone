@@ -88,6 +88,11 @@ angular.module('app.services', [])
                  practise.char = Array.apply(null, Array(26)).map(function (x, i){return 0});
                  return practise;
              },
+             updateDailyUse : function (data, session){
+                 var index = data.dailyUseSessions.length -1;
+                 data.dailyUseSessions[index] = session;
+                 return data;
+             },
              getNumDailyUse : function(data){
                 return data.dailyUseSessions.length;
              },

@@ -22,6 +22,7 @@ angular.module('app.controllers', [])
     console.log("started practises: " + $key_data.getNumPractiseStarted(data));
     console.log("finished practises: " + $key_data.getNumPractiseFinished(data));
     console.log("practises by day: " + $key_data.getPractiseByDay(data));
+    console.log("use of characters: " + $key_data.getDailyUseCharStatistics(data));
     console.log(data);
 })
 

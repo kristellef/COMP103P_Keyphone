@@ -103,8 +103,15 @@ angular.module('app.services', [])
                  return data.dailyUseSessions;
              },
              getDailyUseCharStatistics : function(data) {
-                 // TODO getDailyUseCharStatistics
-                 return data;
+                 var arr = []
+                 var sessions = data.dailyUseSessions;
+                 for(var i = 0; i < 26; i++){
+                     arr[i] = 0;
+                     for(var j = 0; j < sessions.length; j++){
+                         arr[i] += sessions[j].char[i];
+                     }
+                 }
+                 return arr;
              },
              getNumPractiseStarted : function(data){
                  return data.gamesArchive.length;

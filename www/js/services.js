@@ -125,8 +125,25 @@ angular.module('app.services', [])
                 return counter;
              },
              getMostPractisedWord : function(data){
-                 // TODO getMostPractisedWord
-                 return data;
+                 var dic = {};
+                 games = data.gamesArchive;
+                 for(var i = 0; i < games.length; i++){
+                     words = games[i].words;
+                     for(var j = 0; j < words.length; j++){
+                         var w = words[j];
+                         if (w.played){
+                             dic[w.word] ? dic[w.word]++ : dic[w.word] = 1;
+                         }
+                     }
+                 }
+                 var arr = [];
+                 for(var key in dic){
+                     arr.push({num :dic[key], word : key});
+                 }
+                 arr.sort(function(x, y){
+                     return y.num - x.num;
+                 });
+                 return arr[0].word;
              },
              getTopCorrectWord : function(data) {
                  // TODO getTopCorrectWord

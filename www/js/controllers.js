@@ -95,6 +95,10 @@ angular.module('app.controllers', [])
             startTime = new Date();
             // update localstorage game
             $localstorage.setObject('current_game', gameData);
+            // update the gameData
+            var data = $localstorage.getData();
+            data = $key_data.updateGame(data, gameData);
+            $localstorage.saveData(data);
         } else {
             // game is finished, save time and go to summary
             gameData.endTime = (new Date).getTime();
@@ -366,7 +370,8 @@ angular.module('app.controllers', [])
     if (Object.keys(data).length === 0 && JSON.stringify(data) === JSON.stringify({})){
             data = $key_data.createData();
             $localstorage.saveData(data);
-        }
+        };
+    console.log($key_data.getMostPractisedWord(data));
 })
 
 .controller('startCtrl', function($scope) {

@@ -6,15 +6,28 @@
  */
 angular.module('app.controllers', [])
 
-.controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $data) {
-    var data = $localstorage.getData();
-    data = $data.startDailyPractise(data);
-    // TODO on modal enter start a new dailyUseSessions
+.controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $key_data) {
+    var data;
+    var session;
+    $scope.$on('$ionicView.enter', function(){
+        data = $localstorage.getData();
+        session = $key_data.createSession();
+    });
 
-    // TODO on modal exit finish session
     $ionicPlatform.ready(function() {
-        $scope.playTrack = $audioPlayer.play;
-    })
+        $scope.playTrack = function(char, key){
+            // assume key for 'a' = 1
+            session.char[key - 1]++;
+            $audioPlayer.play(char, key);
+        }
+    });
+
+    $scope.$on('$ionicView.leave', function(){
+        session.end = new Date();
+        data = $key_data.addDailyUse(data, session);
+        $localstorage.saveData(data);
+        console.log(data);
+    });
 })
 
 .controller('chooseListCtrl', function($scope, $localstorage, $state, GameDataCreator) {
@@ -328,8 +341,14 @@ angular.module('app.controllers', [])
     }
 })
 
-.controller('AppCtrl', function($scope) {
-    // nothing to do here....
+.controller('AppCtrl', function($scope, $localstorage, $key_data) {
+    // check if statisticsdata exists, if not,
+    /// create it
+    var data = $localstorage.getData();
+    if (Object.keys(data).length === 0 && JSON.stringify(data) === JSON.stringify({})){
+            data = $key_data.createData();
+            $localstorage.saveData(data);
+        }
 })
 
 .controller('startCtrl', function($scope) {

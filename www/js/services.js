@@ -6,7 +6,7 @@
  */
 angular.module('app.services', [])
 
-.factory('$key_data', [function($scope, $localstorage){
+.factory('$key_data', [function($scope){
         /* Factory Data
          *
          * createData : function()
@@ -86,14 +86,21 @@ angular.module('app.services', [])
          return {
              createData : function() {
                  var data = {};
-                 data.numDailyUse = 0;
                  data.timeDailyUse = 0;
                  data.gamesArchive = [];
                  data.dailyUseSessions = [];
                  return data;
              },
+             createSession : function (){
+                 var practise = {};
+                 practise.begin = new Date();
+                 practise.end = 0;
+                 // create an array for each char
+                 practise.char = Array.apply(null, Array(26)).map(function (x, i){return 0});
+                 return practise;
+             },
              getNumDailyUse : function(data){
-                return data.numDailyUse;
+                return data.dailyUseSessions.length;
              },
              getTimeDailyUse : function(data) {
                 return data.timeDailyUse;
@@ -133,22 +140,20 @@ angular.module('app.services', [])
                  //TODO getPractiseByDay
                  return data;
              },
-             addDailyPractise : function(data) {
-                 //TODO addDailyPractise
+             addDailyUse : function(data, dayuse){
+                 data.dailyUseSessions.push(dayuse);
+                 begin = dayuse.begin.getTime();
+                 end = dayuse.end.getTime();
+                 data.timeDailyUse += end - begin;
                  return data;
              },
-             startDailyPractise : function(data) {
-                 data.numDailyUse = 0;
-                 return data;
-             },
-             addGame : function(game){
+             addGame : function(game, data){
                  if(!game){
                      // game is empty
-                     return;
+                     return data;
                  }
-                 var data = $localstorage.getData();
                  data.gamesArchive.push(game);
-                 $localstorage.saveData(data);
+                 return data;
              }
          }
 }])
@@ -338,7 +343,7 @@ angular.module('app.services', [])
   }
 }])
 
-.factory('$localstorage', ['$window', function($window, $key_data){
+.factory('$localstorage', ['$window', function($window){
   /* Factory $localstorage
    * This factory manages saving all the data in any kind of
    * database. Currently, just localStorage is used.
@@ -398,13 +403,8 @@ angular.module('app.services', [])
       }
       return words;
     },
-    getData : function(){
-        var data = JSON.parse($window.localStorage['keyphone_data']);
-        if (!data) {
-            data = $key_data.createData();
-            $window.localStorage['keyphone_data'] = JSON.stringify(data);
-        }
-        return data;
+    getData : function() {
+        return JSON.parse($window.localStorage['keyphone_data'] || '{}');
     },
     saveData : function(data){
         $window.localStorage['keyphone_data'] = JSON.stringify(data);

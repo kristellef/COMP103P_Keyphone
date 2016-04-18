@@ -4,17 +4,26 @@
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
     </ion-nav-buttons>
     <ion-content overflow-scroll="true" padding="true" class="has-header has-footer">
-        numdailyuse: {{NumDailyUse}} <br />
- time minutes: {{TimeDailyUseMinutes}}<br />
+
  most played words: {{MostPractisedWord}} <br />
  most correct words: {{TopCorrectWord}} <br />
  most wrong words: {{TopWrongWord}} <br />
- started practises: {{NumPractiseStarted}} <br />
- finished practises: {{NumPractiseFinished}} <br />
- <canvas donutchart options="pieOptions" data="bardata" width="500" height="300"></canvas>
 
- practises by day: {{PractiseByDay}} <br />
- use of characters [a..z]: {{DailyUseCharStatistics}}<br />
+ <h2>Practise Statistics</h2>
+ <canvas radarchart options="pracByDayOptions" data="pracByDayData" width="500" height="300"></canvas><br />
+ Freq. of practise by days
+<br />
+ <canvas barchart legend=false options="barOptions" data="barChart"></canvas>
+ <br />
 
+
+<h2>Daily Use statistics</h2>
+Total number of training: {{NumDailyUse}} <br />
+Total training time in minutes: {{TimeDailyUseMinutes}}<br />
+<br />
+
+ <canvas barchart legend=true options="charStatisticsOpt" data="charStatisticsData"></canvas>
+
+ <br />
     </ion-content>
 </ion-view>

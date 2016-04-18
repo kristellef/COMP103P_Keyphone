@@ -76,6 +76,8 @@ angular.module('app.services', [])
          *  Increases the internal counter for
          *  the daily practises
          */
+
+         //TODO return the statistics of (in)correct said words
          return {
              createData : function() {
                  var data = {};
@@ -482,11 +484,17 @@ angular.module('app.services', [])
    *        if there doesn't exist any, it creates
    *        one and returns it
    *
-   *    saveDate : function(data)
+   *    saveData : function(data)
    *        saves the data object into the database
    *
    *    getList: function(int id)
    *        Returns the List with the ID or an empty obj
+   *
+   *    getCurrentGame : function() :
+   *        Returns the current practiseSession
+   *
+   *    saveCurrentGame : function(game)
+   *        saves the current Game in the db
    */
   return {
     setObject: function(key, value) {
@@ -516,6 +524,12 @@ angular.module('app.services', [])
     },
     saveData : function(data){
         $window.localStorage['keyphone_data'] = JSON.stringify(data);
+    },
+    getCurrentGame : function() {
+        return JSON.parse($window.localStorage['current_game'] || '{}');
+    },
+    saveCurrentGame : function(game){
+        $window.localStorage['current_game'] = JSON.stringify(game);
     },
     getList: function(id) {
       return JSON.parse($window.localStorage[id] || '{}');

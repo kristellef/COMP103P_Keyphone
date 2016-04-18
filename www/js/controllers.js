@@ -16,112 +16,8 @@ angular.module('app.controllers', [])
         };
 })
 
-.controller('StatCtrl', function($scope, $localstorage, $key_data, $ionicPlatform) {
-    $ionicPlatform.ready(function(){
-        var data = $localstorage.getData();
-        $scope.NumDailyUse = $key_data.getNumDailyUse(data);
-        $scope.TimeDailyUseMinutes = $key_data.getTimeDailyUseMinutes(data);
-        $scope.MostPractisedWord = $key_data.getMostPractisedWord(data);
-        $scope.TopCorrectWord = $key_data.getTopCorrectWord(data);
-        $scope.TopWrongWord = $key_data.getTopWrongWord(data);
-        $scope.NumPractiseStarted = $key_data.getNumPractiseStarted(data);
-        $scope.NumPractiseFinished = $key_data.getNumPractiseFinished(data);
-        $scope.PractiseByDay = $key_data.getPractiseByDay(data);
-        $scope.DailyUseCharStatistics = $key_data.getDailyUseCharStatistics(data);
-        $scope.DailyUseByDay = $key_data.getDailyUseByDay(data);
-
-    })
-
-    // Here the Charts for the Statistics Page are created:
-    // Docs and sources:
-    //      http://www.chartjs.org/
-    //      https://github.com/gonewandering/angles
-
-    // Pie-Chart for the Practises by
-    // Day
-    $scope.pracByDayOptions =
-        {
-            scaleShowLine : true,
-            scaleShowLabels : false,
-            angleLineWidth : 1,
-            pointLabelFontStyle : "bold",
-            pointDot : true,
-            pointDotRadius : 1,
-        }
-    $scope.pracByDayData = {
-        labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-        datasets :
-        [
-          {
-          data: $scope.PractiseByDay,
-          fillColor: "rgba(186, 238, 241, 0.2)",
-          strokeColor: "rgba(220,220,220,0.8)",
-          pointColor: "rgba(220,220,220,0.8)",
-          pointStrokeColor: "#3181d4",
-          pointHighlightFill: "#124af1",
-          pointHighlightStroke: "rgba(110, 48, 48, 0.8)",
-          }
-        ]
-        };
-
-    // Bar Chart for started/finished
-    // Practises
-    $scope.barOptions = {};
-    $scope.barChart = {
-        labels : ["Started","Finished"],
-        datasets :
-        [{
-            fillColor : "rgba(0, 170, 255, 0.4)",
-            data : [$scope.NumPractiseStarted, $scope.NumPractiseFinished]
-        }],
-    }
-
-    // daily use by day distribution
-    $scope.useByDayOptions =
-        {
-            scaleShowLine : true,
-            scaleShowLabels : false,
-            angleLineWidth : 1,
-            pointLabelFontStyle : "bold",
-            pointDot : true,
-            pointDotRadius : 1,
-        }
-    $scope.useByDayData =
-        {
-            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            datasets :
-            [{
-              data: $scope.DailyUseByDay,
-              fillColor: "rgba(186, 238, 241, 0.2)",
-              strokeColor: "rgba(220,220,220,0.8)",
-              pointColor: "rgba(220,220,220,0.8)",
-              pointStrokeColor: "#3181d4",
-              pointHighlightFill: "#124af1",
-              pointHighlightStroke: "rgba(110, 48, 48, 0.8)",
-            }]
-    };
-    // Daily Usedata
-    // Barchart for all the caracters
-    $scope.charStatisticsOpt = {};
-
-    // an Array holding all chars from A - Z
-    // for the label of the barchart
-    var char_arr = [];
-    for(var i = 0; i < 26; i++){
-        char_arr.push(String.fromCharCode(65+i));
-    }
-    $scope.charStatisticsData = {
-        labels : char_arr,
-        datasets :
-        [{
-            fillColor: "rgba(30, 105, 204, 0.7)",
-            pointColor: "rgba(220,220,220,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(220,220,220,1)",
-            data: $scope.DailyUseCharStatistics,
-        }]
-    };
+.controller('startCtrl', function($scope) {
+    // nothing to do here...
 })
 
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $key_data) {
@@ -176,7 +72,7 @@ angular.module('app.controllers', [])
     $scope.$on('$ionicView.enter', function() {
         $scope.nextModal = false;
         $scope.styles = [];
-        gameData = $localstorage.getObject('current_game');
+        gameData = $localstorage.getCurrentGame();
         // If there are still words to guess, select the next
         // one randomly
         if(gameData.activeWords > 0) {
@@ -211,7 +107,7 @@ angular.module('app.controllers', [])
             gameData.words[index].played = true;
             startTime = new Date();
             // update localstorage game
-            $localstorage.setObject('current_game', gameData);
+            $localstorage.saveCurrentGame(gameData);
             // update the gameData
             var data = $localstorage.getData();
             data = $key_data.updateGame(data, gameData);
@@ -224,7 +120,7 @@ angular.module('app.controllers', [])
             var data = $localstorage.getData();
             data = $key_data.updateGame(data, gameData);
             $localstorage.saveData(data);
-            $localstorage.setObject('current_game', gameData);
+            $localstorage.saveCurrentGame(gameData);
             $state.go("app.summary");
         }
     });
@@ -291,12 +187,12 @@ angular.module('app.controllers', [])
             $scope.styles[pos] = {'background-color' : 'green'};
             $scope.nextModal = true;
             gameData.words[index].solved = true;
-            $localstorage.setObject('current_game', gameData);
+            $localstorage.saveCurrentGame(gameData);
             WordSetup.replaceAllButCorrect($scope.chars, first);
         } else {
             if (gameData.words[index].attempts < 2 && !$scope.correct){
                 // wrong guess, but not 2 attempts yet
-                $localstorage.setObject('current_game', gameData);
+                $localstorage.saveCurrentGame(gameData);
                 WordSetup.replaceSixChars($scope.chars, first);
             } else {
                 // all attempts made
@@ -335,6 +231,76 @@ angular.module('app.controllers', [])
         } else {
             $state.transitionTo('app.gamePad', null, {reload: true, notify:true});
         }
+    }
+})
+
+.controller('speakCheckCtrl', function($scope, $state, $localstorage) {
+    $scope.check = function(x) {
+        if(x){
+            // TODO update the status in the game obj
+            // set word to correct
+            $state.go('app.gamePad', null, {reload: true, notify:true});
+        } else {
+            // set word to false
+            $state.go('app.gamePad', null, {reload: true, notify:true});
+        }
+    }
+})
+
+.controller('summaryCtrl', function($scope, $localstorage, $state, GameDataCreator) {
+    var data;
+    var correct;
+    var wrong;
+    var saidCorrectly;
+    $scope.$on('$ionicView.enter', function() {
+        // reset all data
+        data = {};
+        correct = [0,0]; // [0],[1] correct on 1st,2nd attempt
+        wrong = [0,0]; // same here
+        saidCorrectly = 0;
+
+        // get the current state of the game from the db
+        data = $localstorage.getObject('current_game');
+
+        // parse the words
+        for(var i = 0, len = data.words.length; i < len; i++){
+            word = data.words[i];
+            if(word.solved){
+                if(word.attempts < 2){
+                    correct[0]++;
+                } else {
+                    correct[1]++;
+                }
+            } else {
+                if(word.attempts == 1){
+                    wrong[0]++;
+                } else {
+                    wrong[1]++;
+                }
+            }
+            if(word.saidCorrectly){
+                saidCorrectly++;
+            }
+        }
+
+        $scope.correct = correct[0];
+        $scope.withHelp = correct[1];
+        $scope.wrong = wrong[0] + wrong[1];
+        $scope.saidCorrectly = saidCorrectly;
+    });
+
+    $scope.redo = function(){
+        $localstorage.setObject('current_game',
+            GameDataCreator.createGameData($localstorage.getList(data.id)));
+        $state.go('app.gamePad', null, {reload: true, notify:true});
+    }
+
+    $scope.otherList = function() {
+        $state.go('app.chooseList', null, {reload: true, notify:true});
+    }
+
+    $scope.home = function() {
+        $state.go('app.start', null, {reload: true, notify:true});
     }
 })
 
@@ -485,76 +451,110 @@ angular.module('app.controllers', [])
     }
 })
 
-.controller('startCtrl', function($scope) {
-    // nothing to do here...
-})
+.controller('StatCtrl', function($scope, $localstorage, $key_data, $ionicPlatform) {
+    $ionicPlatform.ready(function(){
+        var data = $localstorage.getData();
+        $scope.NumDailyUse = $key_data.getNumDailyUse(data);
+        $scope.TimeDailyUseMinutes = $key_data.getTimeDailyUseMinutes(data);
+        $scope.MostPractisedWord = $key_data.getMostPractisedWord(data);
+        $scope.TopCorrectWord = $key_data.getTopCorrectWord(data);
+        $scope.TopWrongWord = $key_data.getTopWrongWord(data);
+        $scope.NumPractiseStarted = $key_data.getNumPractiseStarted(data);
+        $scope.NumPractiseFinished = $key_data.getNumPractiseFinished(data);
+        $scope.PractiseByDay = $key_data.getPractiseByDay(data);
+        $scope.DailyUseCharStatistics = $key_data.getDailyUseCharStatistics(data);
+        $scope.DailyUseByDay = $key_data.getDailyUseByDay(data);
 
-.controller('speakCheckCtrl', function($scope, $state) {
-    $scope.check = function(x) {
-        if(x){
-            // TODO update the status in the game obj
-            // set word to correct
-            $state.go('app.gamePad', null, {reload: true, notify:true});
-        } else {
-            // set word to false
-            $state.go('app.gamePad', null, {reload: true, notify:true});
+    })
+
+    // Here the Charts for the Statistics Page are created:
+    // Docs and sources:
+    //      http://www.chartjs.org/
+    //      https://github.com/gonewandering/angles
+
+    // Pie-Chart for the Practises by
+    // Day
+    $scope.pracByDayOptions =
+        {
+            scaleShowLine : true,
+            scaleShowLabels : false,
+            angleLineWidth : 1,
+            pointLabelFontStyle : "bold",
+            pointDot : true,
+            pointDotRadius : 1,
         }
+    $scope.pracByDayData = {
+        labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        datasets :
+        [
+          {
+          data: $scope.PractiseByDay,
+          fillColor: "rgba(186, 238, 241, 0.2)",
+          strokeColor: "rgba(220,220,220,0.8)",
+          pointColor: "rgba(220,220,220,0.8)",
+          pointStrokeColor: "#3181d4",
+          pointHighlightFill: "#124af1",
+          pointHighlightStroke: "rgba(110, 48, 48, 0.8)",
+          }
+        ]
+        };
+
+    // Bar Chart for started/finished
+    // Practises
+    $scope.barOptions = {};
+    $scope.barChart = {
+        labels : ["Started","Finished"],
+        datasets :
+        [{
+            fillColor : "rgba(0, 170, 255, 0.4)",
+            data : [$scope.NumPractiseStarted, $scope.NumPractiseFinished]
+        }],
     }
-})
 
-.controller('summaryCtrl', function($scope, $localstorage, $state, GameDataCreator) {
-    var data;
-    var correct;
-    var wrong;
-    var saidCorrectly;
-    $scope.$on('$ionicView.enter', function() {
-        // reset all data
-        data = {};
-        correct = [0,0]; // [0],[1] correct on 1st,2nd attempt
-        wrong = [0,0]; // same here
-        saidCorrectly = 0;
-
-        // get the current state of the game from the db
-        data = $localstorage.getObject('current_game');
-
-        // parse the words
-        for(var i = 0, len = data.words.length; i < len; i++){
-            word = data.words[i];
-            if(word.solved){
-                if(word.attempts < 2){
-                    correct[0]++;
-                } else {
-                    correct[1]++;
-                }
-            } else {
-                if(word.attempts == 1){
-                    wrong[0]++;
-                } else {
-                    wrong[1]++;
-                }
-            }
-            if(word.saidCorrectly){
-                saidCorrectly++;
-            }
+    // daily use by day distribution
+    $scope.useByDayOptions =
+        {
+            scaleShowLine : true,
+            scaleShowLabels : false,
+            angleLineWidth : 1,
+            pointLabelFontStyle : "bold",
+            pointDot : true,
+            pointDotRadius : 1,
         }
+    $scope.useByDayData =
+        {
+            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            datasets :
+            [{
+              data: $scope.DailyUseByDay,
+              fillColor: "rgba(186, 238, 241, 0.2)",
+              strokeColor: "rgba(220,220,220,0.8)",
+              pointColor: "rgba(220,220,220,0.8)",
+              pointStrokeColor: "#3181d4",
+              pointHighlightFill: "#124af1",
+              pointHighlightStroke: "rgba(110, 48, 48, 0.8)",
+            }]
+    };
+    // Daily Usedata
+    // Barchart for all the caracters
+    $scope.charStatisticsOpt = {};
 
-        $scope.correct = correct[0];
-        $scope.withHelp = correct[1];
-        $scope.wrong = wrong[0] + wrong[1];
-        $scope.saidCorrectly = saidCorrectly;
-    });
-
-    $scope.redo = function(){
-        $localstorage.setObject('current_game',
-            GameDataCreator.createGameData($localstorage.getList(data.id)));
-        $state.go('app.gamePad', null, {reload: true, notify:true});
+    // an Array holding all chars from A - Z
+    // for the label of the barchart
+    var char_arr = [];
+    for(var i = 0; i < 26; i++){
+        char_arr.push(String.fromCharCode(65+i));
     }
-
-    $scope.otherList = function() {
-        $state.go('app.chooseList', null, {reload: true, notify:true});
-    }
-
-    $scope.home = function() {
-        $state.go('app.start', null, {reload: true, notify:true});
-    }
+    $scope.charStatisticsData = {
+        labels : char_arr,
+        datasets :
+        [{
+            fillColor: "rgba(30, 105, 204, 0.7)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: $scope.DailyUseCharStatistics,
+        }]
+    };
 })

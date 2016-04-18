@@ -535,26 +535,4 @@ angular.module('app.services', [])
       return JSON.parse($window.localStorage[id] || '{}');
     }
   }
-}])
-
-.factory('WordKeeper', [function($scope){
-    /*
-     * Factory WordKeeper
-     * Small helper factory to remember which word
-     * the user wants to check for correct pronunciation
-     */
-     var word ={};
-     function set(word, index) {
-         word.word = word;
-         word.index = index;
-     }
-     function get() {
-         return [word.word, word.index];
-     }
-
-     return {
-         set: set,
-         get: get
-     }
-
 }]);

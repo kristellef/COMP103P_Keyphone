@@ -227,7 +227,6 @@ angular.module('app.controllers', [])
         // check if user has an active speakCheck, if so
         // go to speakcheck page
         if (settings.speakCheck){
-
             $state.transitionTo('app.speakCheck', {id : index});
         } else {
             $state.transitionTo('app.gamePad', null, {reload: true, notify:true});
@@ -236,21 +235,16 @@ angular.module('app.controllers', [])
 })
 
 .controller('speakCheckCtrl', function($scope, $state, $localstorage, WordKeeper, $stateParams, $key_data) {
-    $scope.check = function(x) {
-        if(x){
-            // TODO update the status in the game obj
+    $scope.check = function(answer) {
+        if(answer){
             // set word to correct
             game = $localstorage.getCurrentGame();
             index = $stateParams.id;
-            console.log(index);
             game.words[index].saidCorrectly = true;
-            console.log(game.words[index].saidCorrectly);
             var data = $localstorage.getData();
             data = $key_data.updateGame(data, game);
             $localstorage.saveData(data);
             $localstorage.saveCurrentGame(game);
-
-
             $state.go('app.gamePad', null, {reload: true, notify:true});
         } else {
             // set word to false

@@ -64,6 +64,10 @@ angular.module('app.services', [])
          *  takes a game and adds it to the obj data
          *  and returns the updated data obj
          *
+         * getDailyUseCharStatistics : function(data)
+         *  same as getPractiseByDay just for the daily
+         *  uses.
+         *
          * addDailyPractise : function (data, practise)
          *  adds a daily practise to the dataset and
          *  returns the dataset

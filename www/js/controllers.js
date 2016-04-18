@@ -17,7 +17,6 @@ angular.module('app.controllers', [])
 })
 
 .controller('StatCtrl', function($scope, $localstorage, $key_data, $ionicPlatform) {
-
     $ionicPlatform.ready(function(){
         var data = $localstorage.getData();
         $scope.NumDailyUse = $key_data.getNumDailyUse(data);
@@ -32,7 +31,11 @@ angular.module('app.controllers', [])
         $scope.DailyUseByDay = $key_data.getDailyUseByDay(data);
 
     })
-    // create the Data for the Charts
+
+    // Here the Charts for the Statistics Page are created:
+    // Docs and sources:
+    //      http://www.chartjs.org/
+    //      https://github.com/gonewandering/angles
 
     // Pie-Chart for the Practises by
     // Day
@@ -47,18 +50,18 @@ angular.module('app.controllers', [])
         }
     $scope.pracByDayData = {
         labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-        datasets : [
+        datasets :
+        [
           {
-              data: $scope.PractiseByDay,
-              fillColor: "rgba(186, 238, 241, 0.2)",
-              strokeColor: "rgba(220,220,220,0.8)",
-            pointColor: "rgba(220,220,220,0.8)",
-            pointStrokeColor: "#3181d4",
-            pointHighlightFill: "#124af1",
-            pointHighlightStroke: "rgba(110, 48, 48, 0.8)",
-              label: "Practise by Day"
+          data: $scope.PractiseByDay,
+          fillColor: "rgba(186, 238, 241, 0.2)",
+          strokeColor: "rgba(220,220,220,0.8)",
+          pointColor: "rgba(220,220,220,0.8)",
+          pointStrokeColor: "#3181d4",
+          pointHighlightFill: "#124af1",
+          pointHighlightStroke: "rgba(110, 48, 48, 0.8)",
           }
-            ]
+        ]
         };
 
     // Bar Chart for started/finished
@@ -66,8 +69,8 @@ angular.module('app.controllers', [])
     $scope.barOptions = {};
     $scope.barChart = {
         labels : ["Started","Finished"],
-        datasets : [
-        {
+        datasets :
+        [{
             fillColor : "rgba(0, 170, 255, 0.4)",
             data : [$scope.NumPractiseStarted, $scope.NumPractiseFinished]
         }],
@@ -87,8 +90,7 @@ angular.module('app.controllers', [])
         {
             labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
             datasets :
-            [
-              {
+            [{
               data: $scope.DailyUseByDay,
               fillColor: "rgba(186, 238, 241, 0.2)",
               strokeColor: "rgba(220,220,220,0.8)",
@@ -96,19 +98,22 @@ angular.module('app.controllers', [])
               pointStrokeColor: "#3181d4",
               pointHighlightFill: "#124af1",
               pointHighlightStroke: "rgba(110, 48, 48, 0.8)",
-              }
-            ]
+            }]
     };
     // Daily Usedata
     // Barchart for all the caracters
     $scope.charStatisticsOpt = {};
+
+    // an Array holding all chars from A - Z
+    // for the label of the barchart
     var char_arr = [];
     for(var i = 0; i < 26; i++){
         char_arr.push(String.fromCharCode(65+i));
     }
     $scope.charStatisticsData = {
         labels : char_arr,
-        datasets : [{
+        datasets :
+        [{
             fillColor: "rgba(30, 105, 204, 0.7)",
             pointColor: "rgba(220,220,220,1)",
             pointStrokeColor: "#fff",
@@ -117,8 +122,6 @@ angular.module('app.controllers', [])
             data: $scope.DailyUseCharStatistics,
         }]
     };
-
-    // end of controller
 })
 
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $key_data) {

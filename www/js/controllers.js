@@ -15,7 +15,7 @@ angular.module('app.controllers', [])
             $localstorage.saveData(data);
         };
 })
-.controller('StatCtrl', function($scope, $localstorage, $key_data, $ionicPlatform, $location, $window){
+.controller('StatCtrl', function($scope, $localstorage, $key_data, $ionicPlatform){
     $ionicPlatform.ready(function(){
         var data = $localstorage.getData();
         $scope.NumDailyUse = $key_data.getNumDailyUse(data);
@@ -27,7 +27,62 @@ angular.module('app.controllers', [])
         $scope.NumPractiseFinished = $key_data.getNumPractiseFinished(data);
         $scope.PractiseByDay = $key_data.getPractiseByDay(data);
         $scope.DailyUseCharStatistics = $key_data.getDailyUseCharStatistics(data);
+
+        // now create the data for the barcharts
+
+        // Data for DailyUseCharStatistics
+
     })
+    $scope.pieOptions =
+        {
+            segmentShowStroke : false,
+        };
+
+    $scope.bardata = [
+                      {
+                          value: $scope.PractiseByDay[0],
+                          color:"#F7464A",
+                          highlight: "#FF5A5E",
+                          label: "Sunday"
+                      },
+                      {
+                          value: $scope.PractiseByDay[1],
+                          color: "#46BFBD",
+                          highlight: "#5AD3D1",
+                          label: "Monday"
+                      },
+                      {
+                          value: $scope.PractiseByDay[2],
+                          color: "#F0045C",
+                          highlight: "#F1345C",
+                          label: "Tuesday"
+                      },
+                      {
+                          value: $scope.PractiseByDay[3],
+                          color: "#F0B410",
+                          highlight: "#F0C810",
+                          label: "Wednesday"
+                      },
+                      {
+                          value: $scope.PractiseByDay[4],
+                          color: "#FAB4AC",
+                          highlight: "#FAC8A0",
+                          label: "Thursday"
+                      },
+                      {
+                          value: $scope.PractiseByDay[5],
+                          color: "#AEE91C",
+                          highlight: "#AAE310",
+                          label: "Friday"
+                      },
+                      {
+                          value: $scope.PractiseByDay[6],
+                          color: "#ABB001",
+                          highlight: "#ABB009",
+                          label: "Saturday"
+                      }
+              ];
+
 })
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $key_data) {
     var data;

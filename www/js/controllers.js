@@ -29,8 +29,9 @@ angular.module('app.controllers', [])
         $scope.NumPractiseFinished = $key_data.getNumPractiseFinished(data);
         $scope.PractiseByDay = $key_data.getPractiseByDay(data);
         $scope.DailyUseCharStatistics = $key_data.getDailyUseCharStatistics(data);
-    })
+        $scope.DailyUseByDay = $key_data.getDailyUseByDay(data);
 
+    })
     // create the Data for the Charts
 
     // Pie-Chart for the Practises by
@@ -72,6 +73,32 @@ angular.module('app.controllers', [])
         }],
     }
 
+    // daily use by day distribution
+    $scope.useByDayOptions =
+        {
+            scaleShowLine : true,
+            scaleShowLabels : false,
+            angleLineWidth : 1,
+            pointLabelFontStyle : "bold",
+            pointDot : true,
+            pointDotRadius : 1,
+        }
+    $scope.useByDayData =
+        {
+            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            datasets :
+            [
+              {
+              data: $scope.DailyUseByDay,
+              fillColor: "rgba(186, 238, 241, 0.2)",
+              strokeColor: "rgba(220,220,220,0.8)",
+              pointColor: "rgba(220,220,220,0.8)",
+              pointStrokeColor: "#3181d4",
+              pointHighlightFill: "#124af1",
+              pointHighlightStroke: "rgba(110, 48, 48, 0.8)",
+              }
+            ]
+    };
     // Daily Usedata
     // Barchart for all the caracters
     $scope.charStatisticsOpt = {};
@@ -82,7 +109,6 @@ angular.module('app.controllers', [])
     $scope.charStatisticsData = {
         labels : char_arr,
         datasets : [{
-            label : "Daily Use",
             fillColor: "rgba(30, 105, 204, 0.7)",
             pointColor: "rgba(220,220,220,1)",
             pointStrokeColor: "#fff",
@@ -94,6 +120,7 @@ angular.module('app.controllers', [])
 
     // end of controller
 })
+
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $key_data) {
     var data;
     var session;

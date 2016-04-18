@@ -220,6 +220,15 @@ angular.module('app.services', [])
                  }
                  return week;
              },
+             getDailyUseByDay : function(data){
+                 var week = [0,0,0,0,0,0,0];
+                 var uses = data.dailyUseSessions;
+                 for(var i = 0; i < uses.length; i++){
+                    var day = new Date(Date.parse(uses[i].begin)).getDay();
+                    week[day]++;
+                 }
+                 return week;
+             },
              addDailyUse : function(data, dayuse){
                  data.dailyUseSessions.push(dayuse);
                  dayuse.end = new Date();

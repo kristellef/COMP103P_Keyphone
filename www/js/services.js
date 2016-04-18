@@ -64,6 +64,10 @@ angular.module('app.services', [])
          *  takes a game and adds it to the obj data
          *  and returns the updated data obj
          *
+         * getDailyUseCharStatistics : function(data)
+         *  same as getPractiseByDay just for the daily
+         *  uses.
+         *
          * addDailyPractise : function (data, practise)
          *  adds a daily practise to the dataset and
          *  returns the dataset
@@ -216,6 +220,15 @@ angular.module('app.services', [])
                  var games = data.gamesArchive;
                  for(var i = 0; i < games.length; i++){
                     var day = new Date(Date.parse(games[i].startTime)).getDay();
+                    week[day]++;
+                 }
+                 return week;
+             },
+             getDailyUseByDay : function(data){
+                 var week = [0,0,0,0,0,0,0];
+                 var uses = data.dailyUseSessions;
+                 for(var i = 0; i < uses.length; i++){
+                    var day = new Date(Date.parse(uses[i].begin)).getDay();
                     week[day]++;
                  }
                  return week;

@@ -61,7 +61,7 @@ angular.module('app.controllers', [])
     }
 })
 
-.controller('gamePad', function($scope, $localstorage, $state, $audioPlayer, WordSetup, $key_data, WordKeeper) {
+.controller('gamePad', function($scope, $localstorage, $state, $audioPlayer, WordSetup, $key_data) {
     var first, gameData, index, startTime;
     // nextModal is used for the visibility of the the
     // "next" button, which enables the user to go
@@ -234,7 +234,7 @@ angular.module('app.controllers', [])
     }
 })
 
-.controller('speakCheckCtrl', function($scope, $state, $localstorage, WordKeeper, $stateParams, $key_data) {
+.controller('speakCheckCtrl', function($scope, $state, $localstorage, $stateParams, $key_data) {
     $scope.check = function(answer) {
         if(answer){
             // set word to correct

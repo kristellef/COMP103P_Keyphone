@@ -56,12 +56,12 @@ angular.module('app.controllers', [])
         console.log(index);
         data = $key_data.updateGame(data, game);
         $localstorage.saveData(data);
-        $localstorage.setObject('current_game', game);
+        $localstorage.saveCurrentGame(game);
         $state.go("app.gamePad");
     }
 })
 
-.controller('gamePad', function($scope, $localstorage, $state, $audioPlayer, WordSetup, $key_data) {
+.controller('gamePad', function($scope, $localstorage, $state, $audioPlayer, WordSetup, $key_data, WordKeeper) {
     var first, gameData, index, startTime;
     // nextModal is used for the visibility of the the
     // "next" button, which enables the user to go
@@ -90,7 +90,7 @@ angular.module('app.controllers', [])
                     iterator++;
                 }
             }
-            $scope.word = (gameData.words[index].word);
+            $scope.word = gameData.words[index].word;
             // now get the first char of the word
             // and generate 8 other random cars
             first = (gameData.words[index].word.charAt(0)).toUpperCase();
@@ -227,18 +227,30 @@ angular.module('app.controllers', [])
         // check if user has an active speakCheck, if so
         // go to speakcheck page
         if (settings.speakCheck){
-            $state.transitionTo('app.speakCheck');
+
+            $state.transitionTo('app.speakCheck', {id : index});
         } else {
             $state.transitionTo('app.gamePad', null, {reload: true, notify:true});
         }
     }
 })
 
-.controller('speakCheckCtrl', function($scope, $state, $localstorage) {
+.controller('speakCheckCtrl', function($scope, $state, $localstorage, WordKeeper, $stateParams, $key_data) {
     $scope.check = function(x) {
         if(x){
             // TODO update the status in the game obj
             // set word to correct
+            game = $localstorage.getCurrentGame();
+            index = $stateParams.id;
+            console.log(index);
+            game.words[index].saidCorrectly = true;
+            console.log(game.words[index].saidCorrectly);
+            var data = $localstorage.getData();
+            data = $key_data.updateGame(data, game);
+            $localstorage.saveData(data);
+            $localstorage.saveCurrentGame(game);
+
+
             $state.go('app.gamePad', null, {reload: true, notify:true});
         } else {
             // set word to false

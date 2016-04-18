@@ -1,0 +1,31 @@
+<ion-view title="Statistics">
+    <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    </ion-nav-buttons>
+    <ion-content overflow-scroll="true" padding="true" class="has-header has-footer ">
+
+ <h2 align=center>Practise Statistics</h2>
+     <canvas  radarchart options="pracByDayOptions" data="pracByDayData" ></canvas><br />
+     <br />
+     <canvas barchart legend=false options="barOptions" data="barChart" width=200></canvas>
+     <br />
+
+<h2 align=center>Daily Use statistics</h2>
+    Total number of training: {{NumDailyUse}} <br />
+    Total training: {{TimeDailyUseMinutes}}min<br /><br />
+    <canvas radarchart options="useByDayOptions" data="useByDayData" ></canvas><br />
+     <canvas barchart legend=true options="charStatisticsOpt" data="charStatisticsData" ></canvas>
+     <br />
+
+ <h2 align="center">Word Statistics</h2>
+      most played words:
+      <div ng-repeat="word in MostPractisedWord">{{word}}</div>
+      <br />
+      most correct words:
+      <div ng-repeat="word in TopCorrectWord">{{word}}</div>
+       <br />
+      most wrong words:
+      <div ng-repeat="word in TopWrongWord">{{word}}</div>
+      <br />
+    </ion-content>
+</ion-view>

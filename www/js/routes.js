@@ -20,6 +20,16 @@ angular.module('app.routes', [])
       templateUrl: 'templates/menu.html',
       controller: 'AppCtrl',
   })
+  .state('app.statistcs', {
+        cache: false,
+        url: '/statistics',
+        views : {
+            'menuContent' : {
+                templateUrl: 'templates/statistics.html',
+                controller: 'StatCtrl'
+            }
+        }
+  })
 
   .state('app.start', {
     url: '/start',
@@ -32,6 +42,7 @@ angular.module('app.routes', [])
   })
 
   .state('app.dailyUse', {
+    cache: false,
     url: '/dailyUse',
     views : {
         'menuContent' : {
@@ -113,6 +124,7 @@ angular.module('app.routes', [])
 
   .state('app.speakCheck', {
       url: '/speakCheck',
+      params: { id : null, },
       views : {
           'menuContent' : {
               templateUrl : 'templates/speakCheck.html',
@@ -130,7 +142,6 @@ angular.module('app.routes', [])
           }
       }
   })
-// TODO add a router for the statistics website
 
 $urlRouterProvider.otherwise('/app/start')
 

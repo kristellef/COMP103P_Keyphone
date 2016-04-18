@@ -6,28 +6,62 @@
  */
 angular.module('app.controllers', [])
 
-.controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer) {
-    // TODO on modal enter start a new dailyUseSessions
-    // TODO on modal exit finish session
-    $ionicPlatform.ready(function() {
-        $scope.playTrack = $audioPlayer.play;
-    })
+.controller('AppCtrl', function($scope, $localstorage, $key_data) {
+    // check if statisticsdata exists, if not,
+    /// create it
+    var data = $localstorage.getData();
+    if (Object.keys(data).length === 0 && JSON.stringify(data) === JSON.stringify({})){
+            data = $key_data.createData();
+            $localstorage.saveData(data);
+        };
 })
 
-.controller('chooseListCtrl', function($scope, $localstorage, $state, GameDataCreator) {
+.controller('startCtrl', function($scope) {
+    // nothing to do here...
+})
+
+.controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $key_data) {
+    var data;
+    var session;
+    $scope.$on('$ionicView.enter', function(){
+        data = $localstorage.getData();
+        session = $key_data.createSession();
+        data = $key_data.addDailyUse(data, session);
+    });
+
+    $ionicPlatform.ready(function() {
+        $scope.playTrack = function(char, key){
+            // keep track of each char pressed
+            // assume key for 'a' = 1
+            session.char[key - 1]++;
+            $audioPlayer.play(char, key);
+            // update session the database
+            data = $key_data.updateDailyUse(data, session);
+            $localstorage.saveData(data);
+        }
+    });
+})
+
+.controller('chooseListCtrl', function($scope, $localstorage, $state, GameDataCreator, $key_data) {
     $scope.$on('$ionicView.enter', function() {
         $scope.lists = $localstorage.getAllLists();
     });
     $scope.chosenList = function(id) {
         // Store the data of the upcoming game into the db,
         // under the key 'current_game'
-        $localstorage.setObject('current_game',
-            GameDataCreator.createGameData($localstorage.getList(id)));
+        var game = GameDataCreator.createGameData($localstorage.getList(id));
+        var data = $localstorage.getData();
+        [data, index] = $key_data.addGame(data, game);
+        game.index = index;
+        console.log(index);
+        data = $key_data.updateGame(data, game);
+        $localstorage.saveData(data);
+        $localstorage.saveCurrentGame(game);
         $state.go("app.gamePad");
     }
 })
 
-.controller('gamePad', function($scope, $localstorage, $state, $audioPlayer, WordSetup) {
+.controller('gamePad', function($scope, $localstorage, $state, $audioPlayer, WordSetup, $key_data) {
     var first, gameData, index, startTime;
     // nextModal is used for the visibility of the the
     // "next" button, which enables the user to go
@@ -38,7 +72,7 @@ angular.module('app.controllers', [])
     $scope.$on('$ionicView.enter', function() {
         $scope.nextModal = false;
         $scope.styles = [];
-        gameData = $localstorage.getObject('current_game');
+        gameData = $localstorage.getCurrentGame();
         // If there are still words to guess, select the next
         // one randomly
         if(gameData.activeWords > 0) {
@@ -56,7 +90,7 @@ angular.module('app.controllers', [])
                     iterator++;
                 }
             }
-            $scope.word = (gameData.words[index].word);
+            $scope.word = gameData.words[index].word;
             // now get the first char of the word
             // and generate 8 other random cars
             first = (gameData.words[index].word.charAt(0)).toUpperCase();
@@ -71,14 +105,30 @@ angular.module('app.controllers', [])
             gameData.activeWords--;
             // change played = true
             gameData.words[index].played = true;
-            startTime = (new Date()).getTime();
+            startTime = new Date();
             // update localstorage game
-            $localstorage.setObject('current_game', gameData);
+            $localstorage.saveCurrentGame(gameData);
+            // update the gameData
+            var data = $localstorage.getData();
+            data = $key_data.updateGame(data, gameData);
+            $localstorage.saveData(data);
         } else {
             // game is finished, save time and go to summary
+            // update statiscs data and safe (as usual)
             gameData.endTime = (new Date).getTime();
-            $localstorage.setObject('current_game', gameData);
+            gameData.finished = true;
+            var data = $localstorage.getData();
+            data = $key_data.updateGame(data, gameData);
+            $localstorage.saveData(data);
+            $localstorage.saveCurrentGame(gameData);
             $state.go("app.summary");
+        }
+    });
+    $scope.$on('ionicView.leave', function() {
+        if(gameData){
+            var data = $localstorage.getData();
+            data = $key_data.updateGame(data, gameData);
+            $localstorage.saveData(data);
         }
     })
 
@@ -130,19 +180,19 @@ angular.module('app.controllers', [])
         // if code gets here, attempt was made
         gameData.words[index].attempts++;
         // safe/update the time needed for the word
-        gameData.words[index].time = (new Date()).getTime() - startTime;
+        gameData.words[index].time = (new Date()).getTime() - startTime.getTime();
 
         if(c == first){
             // correct guess!
             $scope.styles[pos] = {'background-color' : 'green'};
             $scope.nextModal = true;
             gameData.words[index].solved = true;
-            $localstorage.setObject('current_game', gameData);
+            $localstorage.saveCurrentGame(gameData);
             WordSetup.replaceAllButCorrect($scope.chars, first);
         } else {
             if (gameData.words[index].attempts < 2 && !$scope.correct){
                 // wrong guess, but not 2 attempts yet
-                $localstorage.setObject('current_game', gameData);
+                $localstorage.saveCurrentGame(gameData);
                 WordSetup.replaceSixChars($scope.chars, first);
             } else {
                 // all attempts made
@@ -166,15 +216,97 @@ angular.module('app.controllers', [])
     }
 
     $scope.next = function() {
+        // update the gameData
+        if(gameData){
+            var data = $localstorage.getData();
+            data = $key_data.updateGame(data, gameData);
+            $localstorage.saveData(data);
+        }
         // check if speakCheck should be done
         var settings = $localstorage.getObject('settings');
         // check if user has an active speakCheck, if so
         // go to speakcheck page
         if (settings.speakCheck){
-            $state.transitionTo('app.speakCheck');
+            $state.transitionTo('app.speakCheck', {id : index});
         } else {
             $state.transitionTo('app.gamePad', null, {reload: true, notify:true});
         }
+    }
+})
+
+.controller('speakCheckCtrl', function($scope, $state, $localstorage, $stateParams, $key_data) {
+    $scope.check = function(answer) {
+        if(answer){
+            // set word to correct
+            game = $localstorage.getCurrentGame();
+            index = $stateParams.id;
+            game.words[index].saidCorrectly = true;
+            var data = $localstorage.getData();
+            data = $key_data.updateGame(data, game);
+            $localstorage.saveData(data);
+            $localstorage.saveCurrentGame(game);
+            $state.go('app.gamePad', null, {reload: true, notify:true});
+        } else {
+            // set word to false
+            $state.go('app.gamePad', null, {reload: true, notify:true});
+        }
+    }
+})
+
+.controller('summaryCtrl', function($scope, $localstorage, $state, GameDataCreator) {
+    var data;
+    var correct;
+    var wrong;
+    var saidCorrectly;
+    $scope.$on('$ionicView.enter', function() {
+        // reset all data
+        data = {};
+        correct = [0,0]; // [0],[1] correct on 1st,2nd attempt
+        wrong = [0,0]; // same here
+        saidCorrectly = 0;
+
+        // get the current state of the game from the db
+        data = $localstorage.getObject('current_game');
+
+        // parse the words
+        for(var i = 0, len = data.words.length; i < len; i++){
+            word = data.words[i];
+            if(word.solved){
+                if(word.attempts < 2){
+                    correct[0]++;
+                } else {
+                    correct[1]++;
+                }
+            } else {
+                if(word.attempts == 1){
+                    wrong[0]++;
+                } else {
+                    wrong[1]++;
+                }
+            }
+            if(word.saidCorrectly){
+                saidCorrectly++;
+            }
+        }
+
+        $scope.correct = correct[0];
+        $scope.withHelp = correct[1];
+        $scope.wrong = wrong[0] + wrong[1];
+        $scope.saidCorrectly = saidCorrectly;
+    });
+
+    $scope.redo = function(){
+        $localstorage.setObject('current_game',
+            GameDataCreator.createGameData($localstorage.getList(data.id)));
+        $state.go('app.gamePad', null, {reload: true, notify:true});
+    }
+
+    $scope.otherList = function() {
+        $state.go('app.chooseList', null, {reload: true, notify:true});
+    }
+
+    $scope.home = function() {
+        $state.go('app.start', null, {reload: true, notify:true});
     }
 })
 
@@ -325,80 +457,110 @@ angular.module('app.controllers', [])
     }
 })
 
-.controller('AppCtrl', function($scope) {
-    // nothing to do here....
-})
+.controller('StatCtrl', function($scope, $localstorage, $key_data, $ionicPlatform) {
+    $ionicPlatform.ready(function(){
+        var data = $localstorage.getData();
+        $scope.NumDailyUse = $key_data.getNumDailyUse(data);
+        $scope.TimeDailyUseMinutes = $key_data.getTimeDailyUseMinutes(data);
+        $scope.MostPractisedWord = $key_data.getMostPractisedWord(data);
+        $scope.TopCorrectWord = $key_data.getTopCorrectWord(data);
+        $scope.TopWrongWord = $key_data.getTopWrongWord(data);
+        $scope.NumPractiseStarted = $key_data.getNumPractiseStarted(data);
+        $scope.NumPractiseFinished = $key_data.getNumPractiseFinished(data);
+        $scope.PractiseByDay = $key_data.getPractiseByDay(data);
+        $scope.DailyUseCharStatistics = $key_data.getDailyUseCharStatistics(data);
+        $scope.DailyUseByDay = $key_data.getDailyUseByDay(data);
 
-.controller('startCtrl', function($scope) {
-    // nothing to do here...
-})
+    })
 
-.controller('speakCheckCtrl', function($scope, $state) {
-    $scope.check = function(x) {
-        if(x){
-            // TODO update the status in the game obj
-            // set word to correct
-            $state.go('app.gamePad', null, {reload: true, notify:true});
-        } else {
-            // set word to false
-            $state.go('app.gamePad', null, {reload: true, notify:true});
+    // Here the Charts for the Statistics Page are created:
+    // Docs and sources:
+    //      http://www.chartjs.org/
+    //      https://github.com/gonewandering/angles
+
+    // Pie-Chart for the Practises by
+    // Day
+    $scope.pracByDayOptions =
+        {
+            scaleShowLine : true,
+            scaleShowLabels : false,
+            angleLineWidth : 1,
+            pointLabelFontStyle : "bold",
+            pointDot : true,
+            pointDotRadius : 1,
         }
+    $scope.pracByDayData = {
+        labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        datasets :
+        [
+          {
+          data: $scope.PractiseByDay,
+          fillColor: "rgba(186, 238, 241, 0.2)",
+          strokeColor: "rgba(220,220,220,0.8)",
+          pointColor: "rgba(220,220,220,0.8)",
+          pointStrokeColor: "#3181d4",
+          pointHighlightFill: "#124af1",
+          pointHighlightStroke: "rgba(110, 48, 48, 0.8)",
+          }
+        ]
+        };
+
+    // Bar Chart for started/finished
+    // Practises
+    $scope.barOptions = {};
+    $scope.barChart = {
+        labels : ["Started","Finished"],
+        datasets :
+        [{
+            fillColor : "rgba(0, 170, 255, 0.4)",
+            data : [$scope.NumPractiseStarted, $scope.NumPractiseFinished]
+        }],
     }
-})
 
-.controller('summaryCtrl', function($scope, $localstorage, $state, GameDataCreator) {
-    var data;
-    var correct;
-    var wrong;
-    var saidCorrectly;
-    $scope.$on('$ionicView.enter', function() {
-        // reset all data
-        data = {};
-        correct = [0,0]; // [0],[1] correct on 1st,2nd attempt
-        wrong = [0,0]; // same here
-        saidCorrectly = 0;
-
-        // get the current state of the game from the db
-        data = $localstorage.getObject('current_game');
-
-        // parse the words
-        for(var i = 0, len = data.words.length; i < len; i++){
-            word = data.words[i];
-            if(word.solved){
-                if(word.attempts < 2){
-                    correct[0]++;
-                } else {
-                    correct[1]++;
-                }
-            } else {
-                if(word.attempts == 1){
-                    wrong[0]++;
-                } else {
-                    wrong[1]++;
-                }
-            }
-            if(word.saidCorrectly){
-                saidCorrectly++;
-            }
+    // daily use by day distribution
+    $scope.useByDayOptions =
+        {
+            scaleShowLine : true,
+            scaleShowLabels : false,
+            angleLineWidth : 1,
+            pointLabelFontStyle : "bold",
+            pointDot : true,
+            pointDotRadius : 1,
         }
+    $scope.useByDayData =
+        {
+            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            datasets :
+            [{
+              data: $scope.DailyUseByDay,
+              fillColor: "rgba(186, 238, 241, 0.2)",
+              strokeColor: "rgba(220,220,220,0.8)",
+              pointColor: "rgba(220,220,220,0.8)",
+              pointStrokeColor: "#3181d4",
+              pointHighlightFill: "#124af1",
+              pointHighlightStroke: "rgba(110, 48, 48, 0.8)",
+            }]
+    };
+    // Daily Usedata
+    // Barchart for all the caracters
+    $scope.charStatisticsOpt = {};
 
-        $scope.correct = correct[0];
-        $scope.withHelp = correct[1];
-        $scope.wrong = wrong[0] + wrong[1];
-        $scope.saidCorrectly = saidCorrectly;
-    });
-
-    $scope.redo = function(){
-        $localstorage.setObject('current_game',
-            GameDataCreator.createGameData($localstorage.getList(data.id)));
-        $state.go('app.gamePad', null, {reload: true, notify:true});
+    // an Array holding all chars from A - Z
+    // for the label of the barchart
+    var char_arr = [];
+    for(var i = 0; i < 26; i++){
+        char_arr.push(String.fromCharCode(65+i));
     }
-
-    $scope.otherList = function() {
-        $state.go('app.chooseList', null, {reload: true, notify:true});
-    }
-
-    $scope.home = function() {
-        $state.go('app.start', null, {reload: true, notify:true});
-    }
+    $scope.charStatisticsData = {
+        labels : char_arr,
+        datasets :
+        [{
+            fillColor: "rgba(30, 105, 204, 0.7)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: $scope.DailyUseCharStatistics,
+        }]
+    };
 })

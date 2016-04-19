@@ -16,8 +16,9 @@ angular.module('app.controllers', [])
         };
 })
 
-.controller('startCtrl', function($scope) {
-    // nothing to do here...
+.controller('startCtrl', function($scope, $window) {
+    $scope.size = $window.innerWidth;
+    $scope.size2= $window.outerWidth;
 })
 
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $key_data) {

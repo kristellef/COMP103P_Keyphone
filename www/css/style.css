@@ -1,3 +1,4 @@
+/*TODO: Build wrapper for android z1*/
 .footer-button a.button.button-full {
     width:100%;
     margin-top: 0
@@ -194,9 +195,7 @@
 .footer {
     background: url(../data/img/background1.png) no-repeat center top !important;
 }
-.image{
-    height: 200px;
-    width:200px;
+.image {
     border-radius: 30px;
     border: 2px solid #C6E2FF;
 }
@@ -236,10 +235,12 @@
     .circle{
         width:100%;
     }
-    .image{
-        height: 230px;
-        width:230px;
+    .image {
+        height: 190px; //230
         border: 2px solid #C6E2FF;
+    }
+    .spacetop{
+        margin-top: 10px;
     }
     #wrapper3 {
         width: 500px;
@@ -269,8 +270,8 @@
         width:100%;
     }
     .image{
-        height: 230px;
-        width:230px;
+        height: 330px;
+        width: 330px;
         border: 2px solid #C6E2FF;
     }
 
@@ -281,6 +282,10 @@
     .space3{
         margin-right: 400px;
     }
+    .spacetop{
+        margin-top: 20px;
+    }
+
 }
 
 @media (min-width: 992px) {
@@ -336,13 +341,13 @@
   }
   .image{
       height: 230px;
-      width:230px;
+      width: 230px;
       border: 2px solid #C6E2FF;
   }
 }
 
 /*media query for iphone 5*/
-@media (max-width: 320px){
+@media (max-width: 360px){*/
     .circle2{
         display:block;
         width:60px;
@@ -376,7 +381,7 @@
     .circle{
         display:block;
         width:60px;
-        height:70px;
+        height:60px;
         border-radius:50px;
         border:4px double #C6E2FF;
         font-size:20px;
@@ -394,15 +399,16 @@
     }
     .image{
         height: 180px;
-        width:180px;
+        width: 180px;
         border: 2px solid #C6E2FF;
     }
     #wrapper2 {
-        width: 200px;
+        width: 260px;
         margin: 0 auto;
     }
     .spacetop {
-        margin-bottom:50px;
+        margin-bottom: 40px;
+        margin-top: 10px;
     }
 }
 
@@ -447,7 +453,7 @@
     }
     .image{
         height: 400px;
-        width:400px;
+        width:  400px;
         border: 2px solid #C6E2FF;
     }
     #wrapper2 {

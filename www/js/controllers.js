@@ -21,6 +21,7 @@ angular.module('app.controllers', [])
 })
 
 .controller('dailyUseCtrl', function($scope, $ionicPlatform, $audioPlayer, $localstorage, $key_data) {
+    // TODO: dailyUse time mesurer is not working
     var data;
     var session;
     $scope.$on('$ionicView.enter', function(){
@@ -168,7 +169,7 @@ angular.module('app.controllers', [])
          */
         if($scope.nextModal) {
             if(c == first){
-                $audioPlayer.play(c, c);
+                $audioPlayer.play(c.toLowerCase(), c.toLowerCase());
                 return;
             }
         }

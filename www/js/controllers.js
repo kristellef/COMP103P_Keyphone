@@ -494,8 +494,7 @@ angular.module('app.controllers', [])
     $scope.pracByDayData = {
         labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
         datasets :
-        [
-          {
+        [{
           data: $scope.PractiseByDay,
           fillColor: "rgba(186, 238, 241, 0.2)",
           strokeColor: "rgba(220,220,220,0.8)",
@@ -503,15 +502,13 @@ angular.module('app.controllers', [])
           pointStrokeColor: "#3181d4",
           pointHighlightFill: "#124af1",
           pointHighlightStroke: "rgba(110, 48, 48, 0.8)",
-          }
-        ]
+          }]
         };
 
     // Bar Chart for started/finished
     // Practises
     $scope.barOptions = {
-        responsive: true,
-        maintainAspectRatio: true,
+
     };
     $scope.barChart = {
         labels : ["Started","Finished"],

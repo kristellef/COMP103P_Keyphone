@@ -2,13 +2,6 @@
     width:100%;
     margin-top: 0
 }
-.correct {
-    background-color: green;
-}
-
-.wrong {
-    background-color: red;
-}
 .pane{
     background:url(../data/img/background1.png) no-repeat center center fixed;
     background-size: cover;

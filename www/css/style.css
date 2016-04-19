@@ -55,9 +55,9 @@ background:url(../data/img/background1.png) no-repeat center center fixed;
 }
 .color{
     text-align: center;
-    color:#E6E6FA;
+    color:#FFF;
     font-weight: bold;
-    font-size:15px;
+    font-size:20px;
     
 }
 .color4{
@@ -67,11 +67,18 @@ background:url(../data/img/background1.png) no-repeat center center fixed;
     font-size:15px;
     
 }
+.color5{
+    text-align: center;
+    color:#63B8FF;
+    font-weight: bold;
+    font-size:20px;
+    
+}
 .sizelist{
     height: 20px;
 }
 .color2{
-    color:#E6E6FA;
+    color:#FFF;
     font-weight: bold;  
 }
 
@@ -90,7 +97,7 @@ background:url(../data/img/background1.png) no-repeat center center fixed;
 .spacetop2 {margin-bottom:60px;}
 
 .item.item-trns {
-    color: #fff; 
+    color: #FFF; 
     font-weight: bold;
    
 }
@@ -175,6 +182,8 @@ margin: 0 auto;
     width:230px;
     border: 2px solid #C6E2FF;
 }
+
+
 }
 /*media query for iphone 5*/
 @media (max-width: 320px){
@@ -201,7 +210,7 @@ margin: 0 auto;
 width: 200px;
 margin: 0 auto;
 }
-.spacetop {margin-bottom:90px;}
+.spacetop {margin-bottom:50px;}
 }
 /* media query for ipad */
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (-webkit-min-device-pixel-ratio: 1){ 
@@ -220,13 +229,13 @@ margin: 0 auto;
 }
 .color{
     text-align: center;
-    color:#E6E6FA;
+    color:#FFF;
     font-weight: bold;
     font-size:30px;
     
 }
 .color2{
-    color:#E6E6FA;
+    color:#FFF;
     font-weight: bold;  
     font-size:30px;
 }
@@ -234,5 +243,6 @@ margin: 0 auto;
     height:50px;line-height: 50px;font-size:20px;color:#63B8FF;text-align:center;text-decoration: none;background: #F0F8FF;font-weight:bold;border-radius: 12px; border: 2px solid #C6E2FF;margin-bottom: 30px;
 }
 }
+
 
 

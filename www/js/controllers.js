@@ -482,6 +482,8 @@ angular.module('app.controllers', [])
     // Day
     $scope.pracByDayOptions =
         {
+            responsive: true,
+            maintainAspectRatio: true,
             scaleShowLine : true,
             scaleShowLabels : false,
             angleLineWidth : 1,
@@ -507,7 +509,10 @@ angular.module('app.controllers', [])
 
     // Bar Chart for started/finished
     // Practises
-    $scope.barOptions = {};
+    $scope.barOptions = {
+        responsive: true,
+        maintainAspectRatio: true,
+    };
     $scope.barChart = {
         labels : ["Started","Finished"],
         datasets :
@@ -520,6 +525,8 @@ angular.module('app.controllers', [])
     // daily use by day distribution
     $scope.useByDayOptions =
         {
+            responsive: true,
+            maintainAspectRatio: true,
             scaleShowLine : true,
             scaleShowLabels : false,
             angleLineWidth : 1,
@@ -543,7 +550,10 @@ angular.module('app.controllers', [])
     };
     // Daily Usedata
     // Barchart for all the caracters
-    $scope.charStatisticsOpt = {};
+    $scope.charStatisticsOpt = {
+        responsive: true,
+        maintainAspectRatio: true,
+    };
 
     // an Array holding all chars from A - Z
     // for the label of the barchart

@@ -5,6 +5,7 @@
 .correct {
     background-color: green;
 }
+
 .wrong {
     background-color: red;
 }
@@ -12,6 +13,18 @@
     background:url(../data/img/background1.png) no-repeat center center fixed;
     background-size: cover;
 }
+.liststyle{
+    height:50px;
+    font-size:15px;
+    color:#63B8FF;
+    text-align:center;
+    text-decoration: none;
+    background: #F0F8FF;
+    font-weight:bold;
+    border-radius: 12px;
+    border: 2px solid #C6E2FF;
+    margin-bottom: 30px;
+ }
 .circle{
     display:block;
     width:80px;
@@ -80,12 +93,23 @@
 .space2{margin-bottom: 10px}
 
 .btn1{
-    font-size:13px;color:#63B8FF;
-    text-align:center;
-    text-decoration: none;
-    background:#F0F8FF;
-    border-radius: 5px;
-    border: 2px solid #63B8FF;
+    font-size:13px;color:#63B8FF;text-align:center;text-decoration: none;background:#F0F8FF;border-radius: 5px; border: 2px solid #63B8FF;
+ }
+ .liststyle2{
+     font-size:15px;
+     color:#63B8FF;
+     text-align:center;
+     text-decoration: none;
+     background: #F0F8FF;
+     font-weight:bold;
+     border-radius: 12px;
+     border: 2px solid #C6E2FF;
+     font-size:13px;color:#63B8FF;
+     text-align:center;
+     text-decoration: none;
+     background:#F0F8FF;
+     border-radius: 5px;
+     border: 2px solid #63B8FF;
 }
 
 .btn2{
@@ -108,23 +132,25 @@
 .space4{
     margin-right: 20px;
 }
+
 .space5{
     margin-bottom: 30px;
 }
+
 .color{
     text-align: center;
     color:#FFF;
     font-weight: bold;
     font-size:20px;
-
 }
+
 .color4{
     text-align: center;
     color:#63B8FF;
     font-weight: bold;
     font-size:15px;
-
 }
+
 .color5{
     text-align: center;
     color:#63B8FF;
@@ -132,22 +158,23 @@
     font-size:20px;
 
 }
+
 .sizelist{
     height: 20px;
 }
+
 .color2{
     color:#FFF;
     font-weight: bold;
 }
+
 .color3{
     color:red;
     font-size:15px;
     font-weight: bold;
     text-align: center;
 }
-.blockbutton {
-        background-color: #6c92b4 !important;
-}
+
 .btn3{
     font-size:30px;
     color:#63B8FF;
@@ -156,6 +183,7 @@
     font-weight:bold;
     border-radius: 12px;
     border: 2px solid #C6E2FF;
+    background-color: #daf0fe;
 }
 .space6 {
     margin-bottom:50px
@@ -169,9 +197,7 @@
 .item.item-trns {
     color: #FFF;
     font-weight: bold;
-
 }
-
 .footer {
     background: url(../data/img/background1.png) no-repeat center top !important;
 }
@@ -244,7 +270,6 @@
         text-align:center;
         text-decoration:none;
         text-shadow:0 1px 0 #C6E2FF;
-        background:#F0F8FF;
         font-weight:bold
     }
     .circle3{
@@ -458,5 +483,6 @@
         border-radius: 12px;
         border: 2px solid #C6E2FF;
         margin-bottom: 30px;
+        background-color: #daf0fe;
     }
 }

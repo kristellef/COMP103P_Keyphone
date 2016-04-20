@@ -32,6 +32,12 @@ background:url(../data/img/background1.png) no-repeat center center fixed;
 .btn1{
     font-size:13px;color:#63B8FF;text-align:center;text-decoration: none;background:#F0F8FF;border-radius: 5px; border: 2px solid #63B8FF;
 }
+.btn4{
+
+    background: transparent;
+    border: none !important;
+    font-size:0;
+}
 .liststyle2{
     font-size:15px;color:#63B8FF;text-align:center;text-decoration: none;background: #F0F8FF;font-weight:bold;border-radius: 12px; border: 2px solid #C6E2FF;
 }
